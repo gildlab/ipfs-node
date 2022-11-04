@@ -1,0 +1,19 @@
+authtoken: ""
+version: 1
+region: in
+tunnels:
+  ipfs-daemon:
+    addr: 80
+    proto: http
+    hostname: gildlab-ipfs.in.ngrok.io
+  ipfs-deamon-getway:
+    addr: 8080
+    proto: http
+  ssh:
+    addr: 22
+    proto: tcp
+  ngrok-web-interface:
+    addr: 4040
+    proto: http
+
+
