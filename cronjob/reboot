@@ -1,0 +1,3 @@
+@reboot  /home/erigon-node/server-scripts/startup.sh > ~/logs/startup.log
+#ipfs daemon
+@reboot /home/erigon-node/server-scripts/ipfs/install.sh  > ~/logs/install.log
