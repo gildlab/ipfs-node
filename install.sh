@@ -62,6 +62,7 @@ else
    
 fi
 
+sudo apt install jq -y
 ## ipfs api setup
 `cat <<< $(jq '.API.HTTPHeaders = { "Access-Control-Allow-Methods": [ "PUT", "GET", "POST" ], "Access-Control-Allow-Origin": [ "*" ] }' /home/$serviceUser/.ipfs/config) > /home/$serviceUser/.ipfs/config`
 
