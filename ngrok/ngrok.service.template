@@ -3,13 +3,14 @@ Description=ngrok
 After=network.target
 
 [Service]
-ExecStart=/usr/local/bin/ngrok start --all --config /home/SERVICE_USER/.config/ngrok/config.yml
+ExecStart=/home/SERVICE_USER/.notifier/ngrok.sh
 ExecReload=/bin/kill -HUP $MAINPID
 KillMode=process
 IgnoreSIGPIPE=true
 Restart=always
 RestartSec=3
 Type=simple
+StandardOutput=file:/dev/null
 
 [Install]
 WantedBy=multi-user.target
