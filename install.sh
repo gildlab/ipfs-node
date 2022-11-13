@@ -1,5 +1,11 @@
 #!/bin/bash
 
+## Checking if root else
+if [ "$EUID" -ne 0 ]
+  then echo "Please run as root"
+  exit
+fi
+
 ############################### Initializing Global Variables
 ## ngrok auth token
 echo "Enter the USERNAME from which you want to run the services : "
@@ -8,26 +14,26 @@ read serviceUser
 echo "Enter ngrok auth token ? "
 read ngrokAuthToken
 
-echo "Enter ngrok domain ? "
+echo "Enter ngrok domain ? eg: xxxxx.in.ngrok.io"
 read ngrokDomain
 
 ## Building ipfs.service file
-`cp ipfs/ipfs.service.template ipfs/ipfs.service`
-`sed -i -e 's/SERVICE_USER/'"$serviceUser"'/g' ipfs/ipfs.service`
+`cp ipfs/ipfs.service.template /tmp/ipfs.service`
+`sed -i -e 's/SERVICE_USER/'"$serviceUser"'/g' /tmp/ipfs.service`
 
 ## Building ngrok.service file
-`cp ngrok/ngrok.service.template ngrok/ngrok.service`
-`sed -i -e 's/SERVICE_USER/'"$serviceUser"'/g' ngrok/ngrok.service`
+`cp ngrok/ngrok.service.template /tmp/ngrok.service`
+`sed -i -e 's/SERVICE_USER/'"$serviceUser"'/g' /tmp/ngrok.service`
 
 ## Building ngrok config file
-`cp ngrok/config.yml.template ngrok/config.yml`
-`sed -i -e 's/NGROK_DOMAIN/'"$ngrokDomain"'/g' ngrok/config.yml`
-`sed -i -e 's/NGROK_AUTHTOKEN/'"$ngrokAuthToken"'/g' ngrok/config.yml`
+`cp ngrok/config.yml.template /tmp/config.yml`
+`sed -i -e 's/NGROK_DOMAIN/'"$ngrokDomain"'/g' /tmp/config.yml`
+`sed -i -e 's/NGROK_AUTHTOKEN/'"$ngrokAuthToken"'/g' /tmp/config.yml`
 
 ## Copy config to ~/.config/ngrok/config.yml 
-`mkdir -p /home/$serviceUser/.config/ngrok/ && cp ngrok/config.yml /home/$serviceUser/.config/ngrok/config.yml`
+`mkdir -p /home/$serviceUser/.config/ngrok/ && cp /tmp/config.yml /home/$serviceUser/.config/ngrok/config.yml`
 
-################################ Installing GO
+# ################################ Installing GO
 
 if [ ! -f /usr/local/go/bin/go ]; then
     echo -e "installing go"
@@ -67,7 +73,7 @@ sudo apt install jq -y
 `cat <<< $(jq '.API.HTTPHeaders = { "Access-Control-Allow-Methods": [ "PUT", "GET", "POST" ], "Access-Control-Allow-Origin": [ "*" ] }' /home/$serviceUser/.ipfs/config) > /home/$serviceUser/.ipfs/config`
 
 ## Setting up ipfs service
-`cp ipfs/ipfs.service /etc/systemd/system/ipfs.service`
+`cp /tmp/ipfs.service /etc/systemd/system/ipfs.service`
 `sudo systemctl start ipfs`
 `sudo systemctl enable ipfs`
 
@@ -100,6 +106,6 @@ fi
 
 
 ## Setting up ngrok service
-`cp ngrok/ngrok.service /etc/systemd/system/ngrok.service`
+`cp /tmp/ngrok.service /etc/systemd/system/ngrok.service`
 `sudo systemctl start ngrok`
 `sudo systemctl enable ngrok`
