@@ -1,4 +1,7 @@
 #!/bin/bash
+source .env
+
+SCRIPTDIR=`cd "$(dirname "$0")" && pwd`
 
 ## Checking if root else
 if [ "$EUID" -ne 0 ]
@@ -6,41 +9,37 @@ if [ "$EUID" -ne 0 ]
   exit
 fi
 
+## CHECKING ENV VARIABLES
+if [[ ( -z "$SERVICE_USER" ) || ( -z "$NGROK_DOMAIN" ) || ( -z "$NGROK_AUTH_TOKEN" ) || ( -z "$NGROK_API_KEY" ) ]]; then
+  echo "Environment variables not set"
+  exit
+fi
+
 ############################### Initializing Global Variables
-## ngrok auth token
-echo "Enter the USERNAME from which you want to run the services : "
-read serviceUser
-
-echo "Enter ngrok auth token ? "
-read ngrokAuthToken
-
-echo "Enter ngrok domain ? eg: xxxxx.in.ngrok.io"
-read ngrokDomain
-
 ## Building ipfs.service file
 `cp ipfs/ipfs.service.template /tmp/ipfs.service`
-`sed -i -e 's/SERVICE_USER/'"$serviceUser"'/g' /tmp/ipfs.service`
+`sed -i -e 's/SERVICE_USER/'"$SERVICE_USER"'/g' /tmp/ipfs.service`
 
 ## Building ngrok.service file
 `cp ngrok/ngrok.service.template /tmp/ngrok.service`
-`sed -i -e 's/SERVICE_USER/'"$serviceUser"'/g' /tmp/ngrok.service`
+`sed -i -e 's/SERVICE_USER/'"$SERVICE_USER"'/g' /tmp/ngrok.service`
 
 ## Building ngrok config file
 `cp ngrok/config.yml.template /tmp/config.yml`
-`sed -i -e 's/NGROK_DOMAIN/'"$ngrokDomain"'/g' /tmp/config.yml`
-`sed -i -e 's/NGROK_AUTHTOKEN/'"$ngrokAuthToken"'/g' /tmp/config.yml`
+`sed -i -e 's/NGROK_DOMAIN/'"$NGROK_DOMAIN"'/g' /tmp/config.yml`
+`sed -i -e 's/NGROK_AUTHTOKEN/'"$NGROK_AUTH_TOKEN"'/g' /tmp/config.yml`
 
 ## Copy config to ~/.config/ngrok/config.yml 
-`mkdir -p /home/$serviceUser/.config/ngrok/ && cp /tmp/config.yml /home/$serviceUser/.config/ngrok/config.yml`
+`mkdir -p /home/$SERVICE_USER/.config/ngrok/ && cp /tmp/config.yml /home/$SERVICE_USER/.config/ngrok/config.yml`
 
-# ################################ Installing GO
+################################ Installing GO
 
 if [ ! -f /usr/local/go/bin/go ]; then
     echo -e "installing go"
     # `sudo wget https://golang.org/dl/go1.15.5.linux-amd64.tar.gz`
     `sudo tar -C /usr/local -xzf go1.15.5.linux-amd64.tar.gz`
-    `echo "export PATH=$PATH:/usr/local/go/bin" >> /home/$serviceUser/.bashrc`
-    `source /home/$serviceUser/.bashrc`
+    `echo "export PATH=$PATH:/usr/local/go/bin" >> /home/$SERVICE_USER/.bashrc`
+    `source /home/$SERVICE_USER/.bashrc`
     /usr/local/go/bin/go version
 else
     echo "GO FOUND, VERSION = "
@@ -61,7 +60,7 @@ else
 
     echo -e "go-ipfs installed."
     echo `ipfs --version`
-    source /home/$serviceUser/.bashrc
+    source /home/$SERVICE_USER/.bashrc
 
     echo -e "initializing ipfs"
     ipfs init
@@ -70,10 +69,11 @@ fi
 
 sudo apt install jq -y
 ## ipfs api setup
-`cat <<< $(jq '.API.HTTPHeaders = { "Access-Control-Allow-Methods": [ "PUT", "GET", "POST" ], "Access-Control-Allow-Origin": [ "*" ] }' /home/$serviceUser/.ipfs/config) > /home/$serviceUser/.ipfs/config`
+`cat <<< $(jq '.API.HTTPHeaders = { "Access-Control-Allow-Methods": [ "PUT", "GET", "POST" ], "Access-Control-Allow-Origin": [ "*" ] }' /home/$SERVICE_USER/.ipfs/config) > /home/$SERVICE_USER/.ipfs/config`
 
 ## Setting up ipfs service
 `cp /tmp/ipfs.service /etc/systemd/system/ipfs.service`
+`sudo systemctl daemon-reload`
 `sudo systemctl start ipfs`
 `sudo systemctl enable ipfs`
 
@@ -90,6 +90,7 @@ else
 fi
 ## Copying nginx config and restarting
 `sudo cp  nginx/default /etc/nginx/sites-available/default`
+`sudo systemctl daemon-reload`
 `sudo service nginx restart`
 
 ################################ Installing NGROK
@@ -107,5 +108,6 @@ fi
 
 ## Setting up ngrok service
 `cp /tmp/ngrok.service /etc/systemd/system/ngrok.service`
+`sudo systemctl daemon-reload`
 `sudo systemctl start ngrok`
 `sudo systemctl enable ngrok`
