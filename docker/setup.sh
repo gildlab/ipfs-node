@@ -1,4 +1,4 @@
-#!/bin.sh
+#!/bin/sh
 docker-compose up -d
 sleep 60
 docker-compose exec ipfs ipfs config --json API.HTTPHeaders.Access-Control-Allow-Origin '["*"]'
