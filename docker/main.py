@@ -7,6 +7,7 @@ entityCount = 0
 skip = 1000
 
 def initial_sync(client, minter):
+    print("Initial Syncing")
     global entityCount
     global skip
     query = """{
@@ -24,8 +25,7 @@ def initial_sync(client, minter):
     for hash_ in hashes:
         _hash = hash_['hash']
         if(len(_hash) == 46):
-            os.system("docker-compose exec ipfs ipfs pin add " + _hash)
-            print("pinning : " + _hash)
+            pin(_hash)
 
     if(entityCount > skip):
         while(True):
@@ -42,8 +42,7 @@ def initial_sync(client, minter):
             for hash_ in hashes:
                 _hash = hash_['hash']
                 if(len(_hash) == 46):
-                    os.system("docker-compose exec ipfs ipfs pin add " + _hash)
-                    print("pinning : " + _hash)
+                    pin(_hash)
             if(len(hashes) < skip):
                 break
             
@@ -69,9 +68,14 @@ def checkNewHashes(client, minter):
     for hash_ in hashes:
         _hash = hash_['hash']
         if(len(_hash) == 46):
-            os.system("docker-compose exec ipfs ipfs pin add " + _hash)
-            print("pinning : " + _hash)
+            pin(_hash)
 
+def pin(_hash):
+    try:
+        os.system("docker-compose exec ipfs ipfs pin add " + _hash)
+        print("pinning : " + _hash)
+    except:
+        print("pin failed")
 config = open('config.json', 'r')
 
 data = json.load(config)
@@ -82,7 +86,9 @@ url = "https://api.thegraph.com/subgraphs/name/gild-lab/offchainassetvault"
 client = GraphqlClient(endpoint=url)
 
 initial_sync(client, address)
+
+print("regular syncing")
 while(True):
     checkNewHashes(client, address)
-    time.sleep(5)
+    time.sleep(10)
 
