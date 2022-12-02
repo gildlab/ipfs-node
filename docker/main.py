@@ -1,15 +1,21 @@
 import json
 from python_graphql_client import GraphqlClient
 import time
-import os
+import requests
+import logging
 
+logging.basicConfig(filename='pinning.log', filemode='w', format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+logger = logging.getLogger()
+logger.setLevel(logging.DEBUG) 
 entityCount = 0
 skip = 1000
 
+ipfsRPCurl = "http://127.0.0.1:5001/api/v0/pin/add?arg=QmXoMEphfUAYbE6NFqit6yGtfCGLijMeCgawVd5T9oXej7"
+
 def initial_sync(client, minter):
-    print("Initial Syncing")
     global entityCount
     global skip
+    logger.info("Initial Syncing")
     query = """{
             accounts(where: {address: \"""" + minter + """\"}){
                 hashCount
@@ -19,32 +25,40 @@ def initial_sync(client, minter):
             }
         }
     """
-    response = client.execute(query=query)
-    entityCount = int(response['data']['accounts'][0]['hashCount'])
-    hashes = response['data']['accounts'][0]['hashes']
-    for hash_ in hashes:
-        _hash = hash_['hash']
-        if(len(_hash) == 46):
-            pin(_hash)
+    try:
+        response = client.execute(query=query)
+    except:
+        logger.critical("graphql api error")
+    else:
+        entityCount = int(response['data']['accounts'][0]['hashCount'])
+        hashes = response['data']['accounts'][0]['hashes']
+        for hash_ in hashes:
+            _hash = hash_['hash']
+            if(len(_hash) == 46):
+                pin(_hash)
 
-    if(entityCount > skip):
-        while(True):
-            query = """{
-                        accounts(where: {address: \"""" + minter + """\"}){
-                            hashes(first: 1000, skip: """ + str(skip) + """, orderby: timestamp){
-                                hash
+        if(entityCount > skip):
+            while(True):
+                query = """{
+                            accounts(where: {address: \"""" + minter + """\"}){
+                                hashes(first: 1000, skip: """ + str(skip) + """, orderby: timestamp){
+                                    hash
+                                }
                             }
                         }
-                    }
-                """
-            response = client.execute(query=query)
-            hashes = response['data']['accounts'][0]['hashes']
-            for hash_ in hashes:
-                _hash = hash_['hash']
-                if(len(_hash) == 46):
-                    pin(_hash)
-            if(len(hashes) < skip):
-                break
+                    """
+                try:
+                    response = client.execute(query=query)
+                except:
+                    logger.critical("graphql api error")
+                else:
+                    hashes = response['data']['accounts'][0]['hashes']
+                    for hash_ in hashes:
+                        _hash = hash_['hash']
+                        if(len(_hash) == 46):
+                            pin(_hash)
+                    if(len(hashes) < skip):
+                        break
             
 def checkNewHashes(client, minter):
     global entityCount
@@ -59,23 +73,30 @@ def checkNewHashes(client, minter):
         }
     """
 
-    response = client.execute(query=query)
-    hashes = response['data']['accounts'][0]['hashes']
-    if(len(hashes) == 0):
-        print("No new Hash.")
-        return
-    entityCount = int(response['data']['accounts'][0]['hashCount'])
-    for hash_ in hashes:
-        _hash = hash_['hash']
-        if(len(_hash) == 46):
-            pin(_hash)
+    try:
+        response = client.execute(query=query)
+    except:
+        logger.critical("graphql api error")
+    else:
+        hashes = response['data']['accounts'][0]['hashes']
+        if(len(hashes) == 0):
+            logger.info("No new Hash.")
+            return
+        entityCount = int(response['data']['accounts'][0]['hashCount'])
+        for hash_ in hashes:
+            _hash = hash_['hash']
+            if(len(_hash) == 46):
+                pin(_hash)
 
 def pin(_hash):
+    global ipfsRPCurl
     try:
-        os.system("docker-compose exec ipfs ipfs pin add " + _hash)
-        print("pinning : " + _hash)
+        params = {'arg': _hash}
+        r = requests.post(url=ipfsRPCurl, params=params)
+        logger.info(r.text)
     except:
-        print("pin failed")
+        logger.error("pin failed")
+        
 config = open('config.json', 'r')
 
 data = json.load(config)
@@ -87,8 +108,7 @@ client = GraphqlClient(endpoint=url)
 
 initial_sync(client, address)
 
-print("regular syncing")
+logger.info("regular syncing")
 while(True):
     checkNewHashes(client, address)
     time.sleep(10)
-

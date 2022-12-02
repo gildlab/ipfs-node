@@ -1,0 +1,122 @@
+2022-12-02 14:37:13,390 - root - INFO - Initial Syncing
+2022-12-02 14:37:13,395 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): api.thegraph.com:443
+2022-12-02 14:37:13,827 - urllib3.connectionpool - DEBUG - https://api.thegraph.com:443 "POST /subgraphs/name/gild-lab/offchainassetvault HTTP/1.1" 200 None
+2022-12-02 14:37:13,832 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 127.0.0.1:5001
+2022-12-02 14:37:13,851 - urllib3.connectionpool - DEBUG - http://127.0.0.1:5001 "POST /api/v0/pin/add?arg=QmXoMEphfUAYbE6NFqit6yGtfCGLijMeCgawVd5T9oXej7&arg=Qmasm76PFDbvpBqZyLTvFmERqmzFJupnWkq1RnSCg96RNo HTTP/1.1" 200 None
+2022-12-02 14:37:13,852 - root - INFO - {"Pins":["QmXoMEphfUAYbE6NFqit6yGtfCGLijMeCgawVd5T9oXej7","Qmasm76PFDbvpBqZyLTvFmERqmzFJupnWkq1RnSCg96RNo"]}
+
+2022-12-02 14:37:13,855 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 127.0.0.1:5001
+2022-12-02 14:37:13,874 - urllib3.connectionpool - DEBUG - http://127.0.0.1:5001 "POST /api/v0/pin/add?arg=QmXoMEphfUAYbE6NFqit6yGtfCGLijMeCgawVd5T9oXej7&arg=QmdwYtArALT5REqkco5XrfeKkZKXHjkhWYdUYDxrXFSTz4 HTTP/1.1" 200 None
+2022-12-02 14:37:13,875 - root - INFO - {"Pins":["QmXoMEphfUAYbE6NFqit6yGtfCGLijMeCgawVd5T9oXej7","QmdwYtArALT5REqkco5XrfeKkZKXHjkhWYdUYDxrXFSTz4"]}
+
+2022-12-02 14:37:13,878 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 127.0.0.1:5001
+2022-12-02 14:37:13,897 - urllib3.connectionpool - DEBUG - http://127.0.0.1:5001 "POST /api/v0/pin/add?arg=QmXoMEphfUAYbE6NFqit6yGtfCGLijMeCgawVd5T9oXej7&arg=QmXoMEphfUAYbE6NFqit6yGtfCGLijMeCgawVd5T9oXej7 HTTP/1.1" 200 None
+2022-12-02 14:37:13,898 - root - INFO - {"Pins":["QmXoMEphfUAYbE6NFqit6yGtfCGLijMeCgawVd5T9oXej7","QmXoMEphfUAYbE6NFqit6yGtfCGLijMeCgawVd5T9oXej7"]}
+
+2022-12-02 14:37:13,901 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 127.0.0.1:5001
+2022-12-02 14:37:13,920 - urllib3.connectionpool - DEBUG - http://127.0.0.1:5001 "POST /api/v0/pin/add?arg=QmXoMEphfUAYbE6NFqit6yGtfCGLijMeCgawVd5T9oXej7&arg=Qmf6ed7XghVW9BCvVofzcKfhNKDeezFUbBaqgZSUVufpeV HTTP/1.1" 200 None
+2022-12-02 14:37:13,920 - root - INFO - {"Pins":["QmXoMEphfUAYbE6NFqit6yGtfCGLijMeCgawVd5T9oXej7","Qmf6ed7XghVW9BCvVofzcKfhNKDeezFUbBaqgZSUVufpeV"]}
+
+2022-12-02 14:37:13,921 - root - INFO - regular syncing
+2022-12-02 14:37:13,924 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): api.thegraph.com:443
+2022-12-02 14:37:14,363 - urllib3.connectionpool - DEBUG - https://api.thegraph.com:443 "POST /subgraphs/name/gild-lab/offchainassetvault HTTP/1.1" 200 None
+2022-12-02 14:37:14,365 - root - INFO - No new Hash.
+2022-12-02 14:37:24,373 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): api.thegraph.com:443
+2022-12-02 14:37:24,846 - urllib3.connectionpool - DEBUG - https://api.thegraph.com:443 "POST /subgraphs/name/gild-lab/offchainassetvault HTTP/1.1" 200 None
+2022-12-02 14:37:24,848 - root - INFO - No new Hash.
+2022-12-02 14:37:34,854 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): api.thegraph.com:443
+2022-12-02 14:37:46,328 - urllib3.connectionpool - DEBUG - https://api.thegraph.com:443 "POST /subgraphs/name/gild-lab/offchainassetvault HTTP/1.1" 200 None
+2022-12-02 14:37:46,330 - root - INFO - No new Hash.
+2022-12-02 14:37:56,339 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): api.thegraph.com:443
+2022-12-02 14:38:00,857 - urllib3.connectionpool - DEBUG - https://api.thegraph.com:443 "POST /subgraphs/name/gild-lab/offchainassetvault HTTP/1.1" 200 None
+2022-12-02 14:38:00,859 - root - INFO - No new Hash.
+2022-12-02 14:38:10,864 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): api.thegraph.com:443
+2022-12-02 14:38:11,309 - urllib3.connectionpool - DEBUG - https://api.thegraph.com:443 "POST /subgraphs/name/gild-lab/offchainassetvault HTTP/1.1" 200 None
+2022-12-02 14:38:11,311 - root - INFO - No new Hash.
+2022-12-02 14:38:21,321 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): api.thegraph.com:443
+2022-12-02 14:39:28,787 - urllib3.connectionpool - DEBUG - https://api.thegraph.com:443 "POST /subgraphs/name/gild-lab/offchainassetvault HTTP/1.1" 200 None
+2022-12-02 14:39:28,789 - root - INFO - No new Hash.
+2022-12-02 14:39:38,799 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): api.thegraph.com:443
+2022-12-02 14:39:39,273 - urllib3.connectionpool - DEBUG - https://api.thegraph.com:443 "POST /subgraphs/name/gild-lab/offchainassetvault HTTP/1.1" 200 None
+2022-12-02 14:39:39,276 - root - INFO - No new Hash.
+2022-12-02 14:39:49,281 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): api.thegraph.com:443
+2022-12-02 14:39:50,740 - urllib3.connectionpool - DEBUG - https://api.thegraph.com:443 "POST /subgraphs/name/gild-lab/offchainassetvault HTTP/1.1" 200 None
+2022-12-02 14:39:50,743 - root - INFO - No new Hash.
+2022-12-02 14:40:00,751 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): api.thegraph.com:443
+2022-12-02 14:40:05,266 - urllib3.connectionpool - DEBUG - https://api.thegraph.com:443 "POST /subgraphs/name/gild-lab/offchainassetvault HTTP/1.1" 200 None
+2022-12-02 14:40:05,268 - root - INFO - No new Hash.
+2022-12-02 14:40:15,274 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): api.thegraph.com:443
+2022-12-02 14:40:19,742 - urllib3.connectionpool - DEBUG - https://api.thegraph.com:443 "POST /subgraphs/name/gild-lab/offchainassetvault HTTP/1.1" 200 None
+2022-12-02 14:40:19,744 - root - INFO - No new Hash.
+2022-12-02 14:40:29,749 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): api.thegraph.com:443
+2022-12-02 14:40:30,209 - urllib3.connectionpool - DEBUG - https://api.thegraph.com:443 "POST /subgraphs/name/gild-lab/offchainassetvault HTTP/1.1" 200 None
+2022-12-02 14:40:30,212 - root - INFO - No new Hash.
+2022-12-02 14:40:40,219 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): api.thegraph.com:443
+2022-12-02 14:40:40,680 - urllib3.connectionpool - DEBUG - https://api.thegraph.com:443 "POST /subgraphs/name/gild-lab/offchainassetvault HTTP/1.1" 200 None
+2022-12-02 14:40:40,683 - root - INFO - No new Hash.
+2022-12-02 14:40:50,691 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): api.thegraph.com:443
+2022-12-02 14:40:51,119 - urllib3.connectionpool - DEBUG - https://api.thegraph.com:443 "POST /subgraphs/name/gild-lab/offchainassetvault HTTP/1.1" 200 None
+2022-12-02 14:40:51,122 - root - INFO - No new Hash.
+2022-12-02 14:41:01,134 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): api.thegraph.com:443
+2022-12-02 14:41:01,595 - urllib3.connectionpool - DEBUG - https://api.thegraph.com:443 "POST /subgraphs/name/gild-lab/offchainassetvault HTTP/1.1" 200 None
+2022-12-02 14:41:01,598 - root - INFO - No new Hash.
+2022-12-02 14:41:11,602 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): api.thegraph.com:443
+2022-12-02 14:41:12,050 - urllib3.connectionpool - DEBUG - https://api.thegraph.com:443 "POST /subgraphs/name/gild-lab/offchainassetvault HTTP/1.1" 200 None
+2022-12-02 14:41:12,054 - root - INFO - No new Hash.
+2022-12-02 14:41:22,059 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): api.thegraph.com:443
+2022-12-02 14:41:26,527 - urllib3.connectionpool - DEBUG - https://api.thegraph.com:443 "POST /subgraphs/name/gild-lab/offchainassetvault HTTP/1.1" 200 None
+2022-12-02 14:41:26,529 - root - INFO - No new Hash.
+2022-12-02 14:41:36,534 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): api.thegraph.com:443
+2022-12-02 14:41:37,002 - urllib3.connectionpool - DEBUG - https://api.thegraph.com:443 "POST /subgraphs/name/gild-lab/offchainassetvault HTTP/1.1" 200 None
+2022-12-02 14:41:37,004 - root - INFO - No new Hash.
+2022-12-02 14:41:47,008 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): api.thegraph.com:443
+2022-12-02 14:41:47,721 - urllib3.connectionpool - DEBUG - https://api.thegraph.com:443 "POST /subgraphs/name/gild-lab/offchainassetvault HTTP/1.1" 200 None
+2022-12-02 14:41:47,725 - root - INFO - No new Hash.
+2022-12-02 14:41:57,729 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): api.thegraph.com:443
+2022-12-02 14:41:58,186 - urllib3.connectionpool - DEBUG - https://api.thegraph.com:443 "POST /subgraphs/name/gild-lab/offchainassetvault HTTP/1.1" 200 None
+2022-12-02 14:41:58,189 - root - INFO - No new Hash.
+2022-12-02 14:42:08,196 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): api.thegraph.com:443
+2022-12-02 14:42:08,657 - urllib3.connectionpool - DEBUG - https://api.thegraph.com:443 "POST /subgraphs/name/gild-lab/offchainassetvault HTTP/1.1" 200 None
+2022-12-02 14:42:08,660 - root - INFO - No new Hash.
+2022-12-02 14:42:18,664 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): api.thegraph.com:443
+2022-12-02 14:42:19,090 - urllib3.connectionpool - DEBUG - https://api.thegraph.com:443 "POST /subgraphs/name/gild-lab/offchainassetvault HTTP/1.1" 200 None
+2022-12-02 14:42:19,093 - root - INFO - No new Hash.
+2022-12-02 14:42:29,101 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): api.thegraph.com:443
+2022-12-02 14:42:29,566 - urllib3.connectionpool - DEBUG - https://api.thegraph.com:443 "POST /subgraphs/name/gild-lab/offchainassetvault HTTP/1.1" 200 None
+2022-12-02 14:42:29,568 - root - INFO - No new Hash.
+2022-12-02 14:42:39,574 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): api.thegraph.com:443
+2022-12-02 14:42:40,061 - urllib3.connectionpool - DEBUG - https://api.thegraph.com:443 "POST /subgraphs/name/gild-lab/offchainassetvault HTTP/1.1" 200 None
+2022-12-02 14:42:40,064 - root - INFO - No new Hash.
+2022-12-02 14:42:50,069 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): api.thegraph.com:443
+2022-12-02 14:42:50,547 - urllib3.connectionpool - DEBUG - https://api.thegraph.com:443 "POST /subgraphs/name/gild-lab/offchainassetvault HTTP/1.1" 200 None
+2022-12-02 14:42:50,551 - root - INFO - No new Hash.
+2022-12-02 14:43:00,557 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): api.thegraph.com:443
+2022-12-02 14:43:04,996 - urllib3.connectionpool - DEBUG - https://api.thegraph.com:443 "POST /subgraphs/name/gild-lab/offchainassetvault HTTP/1.1" 200 None
+2022-12-02 14:43:04,999 - root - INFO - No new Hash.
+2022-12-02 14:43:15,004 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): api.thegraph.com:443
+2022-12-02 14:43:15,496 - urllib3.connectionpool - DEBUG - https://api.thegraph.com:443 "POST /subgraphs/name/gild-lab/offchainassetvault HTTP/1.1" 200 None
+2022-12-02 14:43:15,498 - root - INFO - No new Hash.
+2022-12-02 14:43:25,502 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): api.thegraph.com:443
+2022-12-02 14:43:25,971 - urllib3.connectionpool - DEBUG - https://api.thegraph.com:443 "POST /subgraphs/name/gild-lab/offchainassetvault HTTP/1.1" 200 None
+2022-12-02 14:43:25,973 - root - INFO - No new Hash.
+2022-12-02 14:43:35,979 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): api.thegraph.com:443
+2022-12-02 14:43:36,428 - urllib3.connectionpool - DEBUG - https://api.thegraph.com:443 "POST /subgraphs/name/gild-lab/offchainassetvault HTTP/1.1" 200 None
+2022-12-02 14:43:36,433 - root - INFO - No new Hash.
+2022-12-02 14:43:46,441 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): api.thegraph.com:443
+2022-12-02 14:43:50,909 - urllib3.connectionpool - DEBUG - https://api.thegraph.com:443 "POST /subgraphs/name/gild-lab/offchainassetvault HTTP/1.1" 200 None
+2022-12-02 14:43:50,911 - root - INFO - No new Hash.
+2022-12-02 14:44:00,920 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): api.thegraph.com:443
+2022-12-02 14:44:01,387 - urllib3.connectionpool - DEBUG - https://api.thegraph.com:443 "POST /subgraphs/name/gild-lab/offchainassetvault HTTP/1.1" 200 None
+2022-12-02 14:44:01,392 - root - INFO - No new Hash.
+2022-12-02 14:44:11,401 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): api.thegraph.com:443
+2022-12-02 14:44:11,882 - urllib3.connectionpool - DEBUG - https://api.thegraph.com:443 "POST /subgraphs/name/gild-lab/offchainassetvault HTTP/1.1" 200 None
+2022-12-02 14:44:11,885 - root - INFO - No new Hash.
+2022-12-02 14:44:21,893 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): api.thegraph.com:443
+2022-12-02 14:44:22,349 - urllib3.connectionpool - DEBUG - https://api.thegraph.com:443 "POST /subgraphs/name/gild-lab/offchainassetvault HTTP/1.1" 200 None
+2022-12-02 14:44:22,351 - root - INFO - No new Hash.
+2022-12-02 14:44:32,358 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): api.thegraph.com:443
+2022-12-02 14:44:32,804 - urllib3.connectionpool - DEBUG - https://api.thegraph.com:443 "POST /subgraphs/name/gild-lab/offchainassetvault HTTP/1.1" 200 None
+2022-12-02 14:44:32,806 - root - INFO - No new Hash.
+2022-12-02 14:44:42,814 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): api.thegraph.com:443
+2022-12-02 14:44:43,280 - urllib3.connectionpool - DEBUG - https://api.thegraph.com:443 "POST /subgraphs/name/gild-lab/offchainassetvault HTTP/1.1" 200 None
+2022-12-02 14:44:43,283 - root - INFO - No new Hash.
