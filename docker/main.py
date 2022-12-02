@@ -3,6 +3,7 @@ from python_graphql_client import GraphqlClient
 import time
 import requests
 import logging
+import os
 
 logging.basicConfig(filename='pinning.log', filemode='w', format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger()
@@ -10,7 +11,7 @@ logger.setLevel(logging.DEBUG)
 entityCount = 0
 skip = 1000
 
-ipfsRPCurl = "http://127.0.0.1:5001/api/v0/pin/add?arg=QmXoMEphfUAYbE6NFqit6yGtfCGLijMeCgawVd5T9oXej7"
+ipfsRPCurl = "http://ipfs.aish.xyz:5001/api/v0/pin/add?arg=QmXoMEphfUAYbE6NFqit6yGtfCGLijMeCgawVd5T9oXej7"
 
 def initial_sync(client, minter):
     global entityCount
@@ -95,8 +96,8 @@ def pin(_hash):
         r = requests.post(url=ipfsRPCurl, params=params)
         logger.info(r.text)
     except:
-        logger.error("pin failed")
-        
+        logger.error("pin failed : ", _hash)
+
 config = open('config.json', 'r')
 
 data = json.load(config)

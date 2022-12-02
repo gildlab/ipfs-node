@@ -25,3 +25,11 @@ services:
       - NGROK_PORT=nginx:80
     depends_on:
       - nginx
+  pinning:
+    image: vishalkale151071/ipfs-pinning
+    volumes:
+      - ./pinning.log:/home/pinning.log
+    links: 
+      - "ipfs:ipfs.aish.xyz"
+    depends_on:
+      - ipfs
