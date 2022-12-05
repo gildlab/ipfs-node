@@ -11,7 +11,7 @@ logger.setLevel(logging.DEBUG)
 entityCount = 0
 skip = 1000
 
-ipfsRPCurl = "http://ipfs.aish.xyz:5001/api/v0/pin/add?arg=QmXoMEphfUAYbE6NFqit6yGtfCGLijMeCgawVd5T9oXej7"
+ipfsRPCurl = "http://ipfs.aish.xyz:5001/api/v0/pin/add"
 
 def initial_sync(client, minter):
     global entityCount
@@ -94,9 +94,9 @@ def pin(_hash):
     try:
         params = {'arg': _hash}
         r = requests.post(url=ipfsRPCurl, params=params)
-        logger.info(r.text)
+        logger.info("pined : " + _hash)
     except:
-        logger.error("pin failed : ", _hash)
+        logger.info("pin failed : " + _hash)
 
 config = open('config.json', 'r')
 
@@ -107,6 +107,16 @@ address = data["minter"]
 url = "https://api.thegraph.com/subgraphs/name/gild-lab/offchainassetvault"
 client = GraphqlClient(endpoint=url)
 
+while(True):
+    try:
+        r = requests.post(url="http://ipfs.aish.xyz:5001/api/v0/version")
+    except:
+        logger.debug("IPFS daemon not running.")
+        time.sleep(1)
+    else:
+        if(r.status_code == 200):
+            break
+        
 initial_sync(client, address)
 
 logger.info("regular syncing")

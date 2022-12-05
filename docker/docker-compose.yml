@@ -26,7 +26,7 @@ services:
     depends_on:
       - nginx
   pinning:
-    image: vishalkale151071/ipfs-pinning
+    image: vishalkale151071/ipfs-pinning:v0.1
     volumes:
       - ./pinning.log:/home/pinning.log
     links: 

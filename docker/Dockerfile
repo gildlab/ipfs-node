@@ -5,6 +5,8 @@ WORKDIR /home
 COPY main.py ./
 COPY requirements.txt ./
 COPY config.json ./
+COPY pinning.log ./
 
 RUN ["pip3", "install", "-r", "requirements.txt"]
+
 CMD ["python", "./main.py"]
