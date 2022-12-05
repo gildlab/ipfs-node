@@ -14,7 +14,7 @@ services:
     volumes:
       - ./default.conf:/etc/nginx/conf.d/default.conf
     links:
-      - "ipfs:ipfs.aish.xyz"
+      - "ipfs:ipfs.gildlab.xyz"
     depends_on:
       - ipfs
   ngrok:
@@ -30,6 +30,6 @@ services:
     volumes:
       - ./pinning.log:/home/pinning.log
     links: 
-      - "ipfs:ipfs.aish.xyz"
+      - "ipfs:ipfs.gildlab.xyz"
     depends_on:
       - ipfs

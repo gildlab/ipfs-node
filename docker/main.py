@@ -11,7 +11,7 @@ logger.setLevel(logging.DEBUG)
 entityCount = 0
 skip = 1000
 
-ipfsRPCurl = "http://ipfs.aish.xyz:5001/api/v0/pin/add"
+ipfsRPCurl = "http://ipfs.gildlab.xyz:5001/api/v0/pin/add"
 
 def initial_sync(client, minter):
     global entityCount
@@ -109,7 +109,7 @@ client = GraphqlClient(endpoint=url)
 
 while(True):
     try:
-        r = requests.post(url="http://ipfs.aish.xyz:5001/api/v0/version")
+        r = requests.post(url="http://ipfs.gildlab.xyz:5001/api/v0/version")
     except:
         logger.debug("IPFS daemon not running.")
         time.sleep(1)
