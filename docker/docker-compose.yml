@@ -1,10 +1,11 @@
 version: '3'
 services:
   ipfs:
-    image: ipfs/go-ipfs:v0.4.23
+    image: ipfs/kubo
     ports:
       - '5001:5001'
       - '8080:8080'
+      - '4001:4001'
     volumes:
       - ./data/ipfs:/data/ipfs
   nginx:
@@ -26,7 +27,7 @@ services:
     depends_on:
       - nginx
   pinning:
-    image: vishalkale151071/ipfs-pinning:v0.1
+    image: vishalkale151071/ipfs-pinning:v0.2
     volumes:
       - ./pinning.log:/home/pinning.log
     links: 

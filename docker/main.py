@@ -13,12 +13,12 @@ skip = 1000
 
 ipfsRPCurl = "http://ipfs.gildlab.xyz:5001/api/v0/pin/add"
 
-def initial_sync(client, minter):
+def initial_sync(client, minter, vault):
     global entityCount
     global skip
     logger.info("Initial Syncing")
     query = """{
-            accounts(where: {address: \"""" + minter + """\"}){
+            account(id: \"""" + vault + "-" + minter + """\"){
                 hashCount
                 hashes(first: 1000, skip: """ + str(entityCount) + """, orderby: timestamp){
                     hash
@@ -26,13 +26,14 @@ def initial_sync(client, minter):
             }
         }
     """
+
     try:
         response = client.execute(query=query)
     except:
         logger.critical("graphql api error")
     else:
-        entityCount = int(response['data']['accounts'][0]['hashCount'])
-        hashes = response['data']['accounts'][0]['hashes']
+        entityCount = int(response['data']['account']['hashCount'])
+        hashes = response['data']['account']['hashes']
         for hash_ in hashes:
             _hash = hash_['hash']
             if(len(_hash) == 46):
@@ -41,7 +42,7 @@ def initial_sync(client, minter):
         if(entityCount > skip):
             while(True):
                 query = """{
-                            accounts(where: {address: \"""" + minter + """\"}){
+                            account(id: \"""" + vault + "-" + minter + """\"){
                                 hashes(first: 1000, skip: """ + str(skip) + """, orderby: timestamp){
                                     hash
                                 }
@@ -53,7 +54,7 @@ def initial_sync(client, minter):
                 except:
                     logger.critical("graphql api error")
                 else:
-                    hashes = response['data']['accounts'][0]['hashes']
+                    hashes = response['data']['account']['hashes']
                     for hash_ in hashes:
                         _hash = hash_['hash']
                         if(len(_hash) == 46):
@@ -61,11 +62,11 @@ def initial_sync(client, minter):
                     if(len(hashes) < skip):
                         break
             
-def checkNewHashes(client, minter):
+def checkNewHashes(client, minter, vault):
     global entityCount
     global skip
     query = """{
-            accounts(where: {address: \"""" + minter + """\"}){
+            account(id: \"""" + vault + "-" + minter + """\"){
                 hashCount
                 hashes(first: 1000, skip: """ + str(entityCount) + """, orderby: timestamp){
                     hash
@@ -79,11 +80,11 @@ def checkNewHashes(client, minter):
     except:
         logger.critical("graphql api error")
     else:
-        hashes = response['data']['accounts'][0]['hashes']
+        hashes = response['data']['account']['hashes']
         if(len(hashes) == 0):
             logger.info("No new Hash.")
             return
-        entityCount = int(response['data']['accounts'][0]['hashCount'])
+        entityCount = int(response['data']['account']['hashCount'])
         for hash_ in hashes:
             _hash = hash_['hash']
             if(len(_hash) == 46):
@@ -103,6 +104,7 @@ config = open('config.json', 'r')
 data = json.load(config)
 
 address = data["minter"]
+contract = data["vault"]
 
 url = "https://api.thegraph.com/subgraphs/name/gild-lab/offchainassetvault"
 client = GraphqlClient(endpoint=url)
@@ -117,9 +119,9 @@ while(True):
         if(r.status_code == 200):
             break
         
-initial_sync(client, address)
+initial_sync(client, address, contract)
 
 logger.info("regular syncing")
 while(True):
-    checkNewHashes(client, address)
+    checkNewHashes(client, address, contract)
     time.sleep(10)
