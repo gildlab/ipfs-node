@@ -17,12 +17,13 @@ def initial_sync(client, minter, vault):
     global entityCount
     global skip
     logger.info("Initial Syncing")
-    query = """{
-            account(id: \"""" + vault + "-" + minter + """\"){
+    query = """
+        {
+            hashes(first: 1000, skip: """ + str(entityCount) + """ id: \"""" + minter + """\"){
+                hash
+            }
+            user(id: \"""" + minter + """\"){
                 hashCount
-                hashes(first: 1000, skip: """ + str(entityCount) + """, orderby: timestamp){
-                    hash
-                }
             }
         }
     """
@@ -32,8 +33,8 @@ def initial_sync(client, minter, vault):
     except:
         logger.critical("graphql api error")
     else:
-        entityCount = int(response['data']['account']['hashCount'])
-        hashes = response['data']['account']['hashes']
+        entityCount = int(response['data']['user']['hashCount'])
+        hashes = response['data']['hashes']
         for hash_ in hashes:
             _hash = hash_['hash']
             if(len(_hash) == 46):
@@ -41,20 +42,22 @@ def initial_sync(client, minter, vault):
 
         if(entityCount > skip):
             while(True):
-                query = """{
-                            account(id: \"""" + vault + "-" + minter + """\"){
-                                hashes(first: 1000, skip: """ + str(skip) + """, orderby: timestamp){
-                                    hash
-                                }
-                            }
+                query = """
+                    {
+                        hashes(first: 1000, skip: """ + str(entityCount) + """ id: \"""" + minter + """\"){
+                            hash
                         }
-                    """
+                        user(id: \" """ + minter + """\"){
+                            hashCount
+                        }
+                    }
+                """
                 try:
                     response = client.execute(query=query)
                 except:
                     logger.critical("graphql api error")
                 else:
-                    hashes = response['data']['account']['hashes']
+                    hashes = response['data']['hashes']
                     for hash_ in hashes:
                         _hash = hash_['hash']
                         if(len(_hash) == 46):
@@ -65,12 +68,13 @@ def initial_sync(client, minter, vault):
 def checkNewHashes(client, minter, vault):
     global entityCount
     global skip
-    query = """{
-            account(id: \"""" + vault + "-" + minter + """\"){
+    query = """
+        {
+            hashes(first: 1000, skip: """ + str(entityCount) + """ id: \"""" + minter + """\"){
+                hash
+            }
+            user(id: \" """ + minter + """\"){
                 hashCount
-                hashes(first: 1000, skip: """ + str(entityCount) + """, orderby: timestamp){
-                    hash
-                }
             }
         }
     """
@@ -80,11 +84,11 @@ def checkNewHashes(client, minter, vault):
     except:
         logger.critical("graphql api error")
     else:
-        hashes = response['data']['account']['hashes']
+        hashes = response['data']['hashes']
         if(len(hashes) == 0):
             logger.info("No new Hash.")
             return
-        entityCount = int(response['data']['account']['hashCount'])
+        entityCount = int(response['data']['user']['hashCount'])
         for hash_ in hashes:
             _hash = hash_['hash']
             if(len(_hash) == 46):
