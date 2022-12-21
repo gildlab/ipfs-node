@@ -7,22 +7,27 @@ import os
 
 logging.basicConfig(filename='pinning.log', filemode='w', format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger()
-logger.setLevel(logging.DEBUG) 
+logger.setLevel(logging.DEBUG)
 entityCount = 0
-skip = 1000
+skip = 100
 
-ipfsRPCurl = "http://ipfs.gildlab.xyz:5001/api/v0/pin/add"
+IS_DOCKER = os.environ.get('INSIDE_DOCKER', False)
 
-def initial_sync(client, minter, vault):
+ipfsURL = "localhost"
+if IS_DOCKER:
+    ipfsURL = 'ipfs.gildlab.xyz'
+
+
+def initial_sync(client, deployer):
     global entityCount
     global skip
     logger.info("Initial Syncing")
     query = """
         {
-            hashes(first: 1000, skip: """ + str(entityCount) + """ id: \"""" + minter + """\"){
-                hash
-            }
-            user(id: \"""" + minter + """\"){
+            deployer(id: \"""" + deployer + """\"){
+                hashes(first:100, skip: 0, orderBy:timestamp, orderDirection: asc){
+                    hash
+                }
                 hashCount
             }
         }
@@ -33,21 +38,21 @@ def initial_sync(client, minter, vault):
     except:
         logger.critical("graphql api error")
     else:
-        entityCount = int(response['data']['user']['hashCount'])
-        hashes = response['data']['hashes']
+        entityCount = int(response['data']['deployer']['hashCount'])
+        hashes = response['data']['deployer']['hashes']
         for hash_ in hashes:
             _hash = hash_['hash']
-            if(len(_hash) == 46):
+            if len(_hash) == 46:
                 pin(_hash)
 
-        if(entityCount > skip):
-            while(True):
+        if entityCount > skip:
+            while True:
                 query = """
                     {
-                        hashes(first: 1000, skip: """ + str(entityCount) + """ id: \"""" + minter + """\"){
-                            hash
-                        }
-                        user(id: \" """ + minter + """\"){
+                       deployer(id: \"""" + deployer + """\"){
+                            hashes(first:100, skip: """ + skip + """, orderBy:timestamp, orderDirection: asc){
+                                hash
+                            }
                             hashCount
                         }
                     }
@@ -57,23 +62,26 @@ def initial_sync(client, minter, vault):
                 except:
                     logger.critical("graphql api error")
                 else:
-                    hashes = response['data']['hashes']
+                    hashes = response['data']['deployer']['hashes']
                     for hash_ in hashes:
                         _hash = hash_['hash']
-                        if(len(_hash) == 46):
+                        if len(_hash) == 46:
                             pin(_hash)
-                    if(len(hashes) < skip):
+                    if len(hashes) < skip:
                         break
-            
-def checkNewHashes(client, minter, vault):
+                    else:
+                        skip = skip + 100
+
+
+def checkNewHashes(client, deployer):
     global entityCount
     global skip
     query = """
         {
-            hashes(first: 1000, skip: """ + str(entityCount) + """ id: \"""" + minter + """\"){
-                hash
-            }
-            user(id: \" """ + minter + """\"){
+            deployer(id: \"""" + deployer + """\"){
+                hashes(first:100, skip: """ + str(entityCount) + """, orderBy:timestamp, orderDirection: asc){
+                    hash
+                }
                 hashCount
             }
         }
@@ -84,48 +92,52 @@ def checkNewHashes(client, minter, vault):
     except:
         logger.critical("graphql api error")
     else:
-        hashes = response['data']['hashes']
-        if(len(hashes) == 0):
+        hashes = response['data']['deployer']['hashes']
+        if len(hashes) == 0:
             logger.info("No new Hash.")
             return
-        entityCount = int(response['data']['user']['hashCount'])
+        entityCount = int(response['data']['deployer']['hashCount'])
         for hash_ in hashes:
             _hash = hash_['hash']
-            if(len(_hash) == 46):
+            if len(_hash) == 46:
                 pin(_hash)
 
 def pin(_hash):
-    global ipfsRPCurl
     try:
-        params = {'arg': _hash}
-        r = requests.post(url=ipfsRPCurl, params=params)
+        params = {'arg': _hash, 'to-files': '/'}
+        pin_response = requests.post(url="http://" + ipfsURL + ":5001/api/v0/pin", params=params)
         logger.info("pined : " + _hash)
     except:
-        logger.info("pin failed : " + _hash)
+        logger.critical("pin failed : " + _hash)
+
 
 config = open('config.json', 'r')
 
 data = json.load(config)
 
-address = data["minter"]
-contract = data["vault"]
+deployer = data["deployer"]
 
 url = "https://api.thegraph.com/subgraphs/name/gild-lab/offchainassetvault"
 client = GraphqlClient(endpoint=url)
 
-while(True):
+while True:
     try:
-        r = requests.post(url="http://ipfs.gildlab.xyz:5001/api/v0/version")
+        r = requests.post(url="http://" + ipfsURL + ":5001/api/v0/version")
     except:
         logger.debug("IPFS daemon not running.")
         time.sleep(1)
     else:
-        if(r.status_code == 200):
+        if r.status_code == 200:
             break
-        
-initial_sync(client, address, contract)
+
+files = {'file': open('ReceiptMetadata.json', 'rb')}
+file_upload = requests.post(url="http://" + ipfsURL + ":5001/api/v0/add?to-files=/", files=files);
+logger.info("ReceiptMetadata pinned : " + file_upload.text)
+
+
+initial_sync(client, deployer)
 
 logger.info("regular syncing")
-while(True):
-    checkNewHashes(client, address, contract)
+while True:
+    checkNewHashes(client, deployer)
     time.sleep(10)
