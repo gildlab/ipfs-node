@@ -2,10 +2,11 @@ version: '3'
 
 services:
   ipfs:
-    image: ipfs/go-ipfs:v0.4.23
+    image: ipfs/kubo
     ports:
       - '5001:5001'
       - '8080:8080'
+      - '4001:4001'
     volumes:
       - ./data/ipfs:/data/ipfs
   nginx:
@@ -15,7 +16,7 @@ services:
     volumes:
       - ./default.conf:/etc/nginx/conf.d/default.conf
     links:
-      - "ipfs:ipfs.aish.xyz"
+      - "ipfs:ipfs.gildlab.xyz"
     depends_on:
       - ipfs
   ngrok:
@@ -24,5 +25,7 @@ services:
       - NGROK_AUTH=${NGROK_AUTH}
       - NGROK_PROTOCOL=http
       - NGROK_PORT=nginx:80
+      - NGROK_REGION=${REGION}
+      - NGROK_HOSTNAME=${HOSTNAME}
     depends_on:
       - nginx
