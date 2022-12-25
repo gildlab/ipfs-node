@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 set -o errexit
 set -o nounset
@@ -21,38 +21,44 @@ printf 'Waiting for Docker to start...\n\n'
 sleep 5
 
 # Docker Compose
-sudo wget --output-document=/usr/local/bin/docker-compose "https://github.com/docker/compose/releases/download/$(wget --quiet --output-document=- https://api.github.com/repos/docker/compose/releases/latest | grep --perl-regexp --only-matching '"tag_name": "\K.*?(?=")')/run.sh"
+sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 sudo chmod +x /usr/local/bin/docker-compose
-sudo wget --output-document=/etc/bash_completion.d/docker-compose "https://raw.githubusercontent.com/docker/compose/$(docker-compose version --short)/contrib/completion/bash/docker-compose"
 printf '\nDocker Compose installed successfully\n\n'
+printf $(docker-compose --version)
 
-source .env
+if [[ -f ".env" ]]
+then
+    echo "\n\nexporting .env variables."
+    source .env
+fi
 
 # Get .env variables
-if [ -z "$ngrok_auth_token" ]
+if [[ ! -v NGROK_AUTH ]]
 then
     echo "Enter ngrok auth token : "
     read ngrok_auth_token
-    echo "NGROK_AUTH=${ngrok_auth_token}" > .env
+    export NGROK_AUTH="$ngrok_auth_token"
 else
     echo "ngrok auth token found."
+fi
 
-if [ -z "$ngrok_hostname" ]
+if [[ ! -v NGROK_HOSTNAME ]]
 then
     echo "Enter ngrok hostname : "
     read ngrok_hostname
-    echo "NGROK_HOSTNAME=${ngrok_hostname}" >> .env
+    export NGROK_HOSTNAME="$ngrok_hostname"
 else
     echo "ngrok hostname found."
+fi
 
-if [ -z "$ngrok_region" ]
+if [[ ! -v NGROK_REGION ]]
 then
     echo "Enter ngrok region : "
     read ngrok_region
-    echo "NGROK_REGION=${ngrok_region}" >> .env
+    export NGROK_REGION="$ngrok_region"
 else
     echo "ngrok region found."
-
+fi
 
 # Start Docker
 docker-compose up -d
@@ -61,4 +67,4 @@ docker-compose exec ipfs ipfs config --json API.HTTPHeaders.Access-Control-Allow
 docker-compose exec ipfs ipfs config --json API.HTTPHeaders.Access-Control-Allow-Methods '["PUT", "GET", "POST"]'
 
 # add ReceiptMetadata.json to ipfs
-docker-compose exec ipfs ipfs add ReceiptMetadata.json --pin --progress 
+curl -F file=@ReceiptMetadata.json 'http://127.0.0.1:5001/api/v0/add?pin=true&to-files=/'
