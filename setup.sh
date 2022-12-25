@@ -26,21 +26,39 @@ sudo chmod +x /usr/local/bin/docker-compose
 sudo wget --output-document=/etc/bash_completion.d/docker-compose "https://raw.githubusercontent.com/docker/compose/$(docker-compose version --short)/contrib/completion/bash/docker-compose"
 printf '\nDocker Compose installed successfully\n\n'
 
+source .env
+
 # Get .env variables
-echo "Enter ngrok auth token : "
-read ngrok_auth_token
-echo "NGROK_AUTH=${ngrok_auth_token}" > .env
+if [ -z "$ngrok_auth_token" ]
+then
+    echo "Enter ngrok auth token : "
+    read ngrok_auth_token
+    echo "NGROK_AUTH=${ngrok_auth_token}" > .env
+else
+    echo "ngrok auth token found."
 
-echo "Enter ngrok hostname : "
-read ngrok_hostname
-echo "NGROK_HOSTNAME=${ngrok_hostname}" >> .env
+if [ -z "$ngrok_hostname" ]
+then
+    echo "Enter ngrok hostname : "
+    read ngrok_hostname
+    echo "NGROK_HOSTNAME=${ngrok_hostname}" >> .env
+else
+    echo "ngrok hostname found."
 
-echo "Enter ngrok region : "
-read ngrok_region
-echo "NGROK_REGION=${ngrok_region}" >> .env
+if [ -z "$ngrok_region" ]
+then
+    echo "Enter ngrok region : "
+    read ngrok_region
+    echo "NGROK_REGION=${ngrok_region}" >> .env
+else
+    echo "ngrok region found."
+
 
 # Start Docker
 docker-compose up -d
 sleep 60
 docker-compose exec ipfs ipfs config --json API.HTTPHeaders.Access-Control-Allow-Origin '["*"]'
 docker-compose exec ipfs ipfs config --json API.HTTPHeaders.Access-Control-Allow-Methods '["PUT", "GET", "POST"]'
+
+# add ReceiptMetadata.json to ipfs
+docker-compose exec ipfs ipfs add ReceiptMetadata.json --pin --progress 
