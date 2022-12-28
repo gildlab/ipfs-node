@@ -28,43 +28,56 @@ printf $(docker-compose --version)
 
 if [[ -f ".env" ]]
 then
-    echo "\n\nexporting .env variables."
+    printf "\n\nexporting .env variables.\n\n"
     source .env
 fi
 
 # Get .env variables
 if [[ ! -v NGROK_AUTH ]]
 then
-    echo "Enter ngrok auth token : "
-    read ngrok_auth_token
-    export NGROK_AUTH="$ngrok_auth_token"
+    read -p "Enter ngrok auth token : " ngrok_auth_token
+    printf "NGROK_AUTH=${ngrok_auth_token}\n" >> .env
 else
-    echo "ngrok auth token found."
+    printf "ngrok auth token found.\n\n"
 fi
 
 if [[ ! -v NGROK_HOSTNAME ]]
 then
-    echo "Enter ngrok hostname : "
-    read ngrok_hostname
-    export NGROK_HOSTNAME="$ngrok_hostname"
+    read -p "Enter ngrok hostname : " ngrok_hostname
+    if [[ ! -z "$ngrok_hostname" ]]
+    then
+    	printf "\nNGROK_HOSTNAME=${ngrok_hostname}" >> .env
+    fi
 else
-    echo "ngrok hostname found."
+    printf "ngrok hostname found.\n\n"
 fi
 
 if [[ ! -v NGROK_REGION ]]
 then
-    echo "Enter ngrok region : "
-    read ngrok_region
-    export NGROK_REGION="$ngrok_region"
+    read -p "Enter ngrok region : " ngrok_region
+    if [[ ! -z "$ngrok_region" ]]
+    then
+    	printf "\nNGROK_REGION=${ngrok_region}" >> .env
+    fi
 else
-    echo "ngrok region found."
+    printf "ngrok region found.\n\n"
 fi
+
+source .env
 
 # Start Docker
 docker-compose up -d
-sleep 60
+sleep 30
 docker-compose exec ipfs ipfs config --json API.HTTPHeaders.Access-Control-Allow-Origin '["*"]'
 docker-compose exec ipfs ipfs config --json API.HTTPHeaders.Access-Control-Allow-Methods '["PUT", "GET", "POST"]'
 
 # add ReceiptMetadata.json to ipfs
 curl -F file=@ReceiptMetadata.json 'http://127.0.0.1:5001/api/v0/add?pin=true&to-files=/'
+
+# opening firewall ports for communication
+sudo ufw enable
+sudo ufw allow 4001/tcp
+sudo ufw allow 4001/udp
+sudo ufw allow 5001/tcp
+sudo ufw allow 8080/tcp
+sudo ufw allow 80/tcp
