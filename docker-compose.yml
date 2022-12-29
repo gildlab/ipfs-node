@@ -11,11 +11,9 @@ services:
       - ${GILDLAB_IPFS_NODE_BASE_PATH}/volumes/ipfs/data/ipfs:/data/ipfs
       - ${GILDLAB_IPFS_NODE_BASE_PATH}/volumes/ipfs/export:/export
   nginx:
-    image: nginx
+    image: gildlab/ipfs-node:nginx
     ports:
       - "80"
-    volumes:
-      - ${GILDLAB_IPFS_NODE_BASE_PATH}/volumes/nginx/conf.d:/etc/nginx/conf.d
     links:
       - "ipfs:ipfs.gildlab.xyz"
     depends_on:
