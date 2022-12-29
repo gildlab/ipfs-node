@@ -48,6 +48,12 @@ If docker is installed correctly you should be able to check the version.
 $ docker --version
 ```
 
+To push docker boxes that you build you will need to log into docker hub.
+
+```
+$ docker login
+```
+
 ### Enter the nix shell for this repository
 
 Once you have nix shell and docker installed you can enter the nix shell with all the commands in this repository.

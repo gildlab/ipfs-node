@@ -46,7 +46,7 @@ let
         dir=$(mktemp -d)
         cd $dir
         wget https://github.com/gildlab/ipfs-node/archive/main.tar.gz
-        tar -zxvf --strip-components=1 main.tar.gz
+        tar --strip-components=1 -zxvf main.tar.gz
         tag=gildlab/ipfs-node:ipfs
         ${pkgs.docker}/bin/docker build -f ./Dockerfile.ipfs -t ''${tag} .
         ${pkgs.docker}/bin/docker push ''${tag}
