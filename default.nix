@@ -55,16 +55,13 @@ let
     gl-docker-build = pkgs.writeShellScriptBin "gl-docker-build" ''
     (
         ${temp-main}
-        rep=gildlab/ipfs-node
-        (
-          cd ipfs
-          ${pkgs.docker}/bin/docker build -t ''${repo}:ipfs .
-        )
-        (
-          cd nginx
-          ${pkgs.docker}/bin/docker build -t ''${repo}:nginx .
-        )
-        ${pkgs.docker}/bin/docker push ''${tag}
+        repo=gildlab/ipfs-node
+
+        ${pkgs.docker}/bin/docker build -t ''${repo}:ipfs -f ./ipfs/Dockerfile ./ipfs
+        ${pkgs.docker}/bin/docker push ''${repo}:ipfs
+
+        ${pkgs.docker}/bin/docker build -t ''${repo}:nginx -f ./nginx/Dockerfile ./nginx
+        ${pkgs.docker}/bin/docker push ''${repo}:nginx
     )
     '';
 
