@@ -14,12 +14,13 @@ let
     ${ensure-env}
     '';
 
+    required-vars = ["NGROK_AUTH" "NGROK_HOSTNAME" "NGROK_REGION"];
+
     ensure-var = var-name: ''
       echo "''${${var-name}}"
       if [ -z "''${${var-name}}" ];
       then
-        echo "${var-name} is empty! Update it in .env by running \`nano .env\`" >&2
-        exit 1
+        read -p "Please set ${var-name}" ${var-name}
       else
         echo "${var-name} is set"
       fi
@@ -30,7 +31,7 @@ let
 
         ${pkgs.dotenv-linter}/bin/dotenv-linter
 
-        ${builtins.concatStringsSep "" (map ensure-var ["NGROK_AUTH" "NGROK_HOSTNAME" "NGROK_REGION"])}
+        ${builtins.concatStringsSep "" (map ensure-var required-vars)}
     '';
 
     gl-docker-build = pkgs.writeShellScriptBin "gl-docker-build" ''
@@ -49,6 +50,6 @@ pkgs.mkShell {
   ];
 
   shellHook = ''
-    ${ensure-env}
+    ${builtins.concatStringSep "" (map ensure-var required-vars)}
   '';
 }
