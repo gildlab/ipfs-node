@@ -1,17 +1,30 @@
-{ pkgs ? import <nixpkgs> {} }:
+{ pkgs ? import
+    (builtins.fetchTarball {
+      name = "nixos-unstable-2022-12-18";
+      url = "https://github.com/nixos/nixpkgs/archive/b65120b662a663f997ddc795c3e42fe9218864c4.tar.gz";
+      sha256 = "sha256:1xa1fif440zhlhc5s3pk9mkprkzvk0rcgif8k4mscbcl6c8sgqw0";
+    })
+    { } }:
 let
+    path = "$HOME/.config/gildlab/ipfs-node";
+    ensure-home = ''
+      export GILDLAB_IPFS_NODE_BASE_PATH=${path}
+      mkdir -p ${path}
+    '';
+
     source-env = ''
-      if [[ -f ".env" ]]
+      if [[ -f "${path}/.env" ]]
         then
-          ${pkgs.dotenv-linter}/bin/dotenv-linter
-          source .env
+          ${pkgs.dotenv-linter}/bin/dotenv-linter ${path}/.env
+          source ${path}/.env
+        else
+          touch ${path}/.env
       fi
     '';
 
     required-vars = ["NGROK_AUTH" "NGROK_HOSTNAME" "NGROK_REGION"];
 
     ensure-var = var-name: ''
-      echo "''${${var-name}}"
       if [ -z "''${${var-name}}" ];
       then
         read -p "Please set ${var-name}: " ${var-name}
@@ -20,9 +33,9 @@ let
           then
             echo "Failed to set ${var-name}" >&2
             exit 1
+          else
+            echo "${var-name}=''${${var-name}}" >> ${path}/.env
         fi
-      else
-        echo "${var-name} is set."
       fi
     '';
 
@@ -31,7 +44,11 @@ let
     '';
 
     gl-docker-run = pkgs.writeShellScriptBin "gl-docker-run" ''
-      ${pkgs.docker}/bin/docker-compose up
+      ${pkgs.docker-compose}/bin/docker-compose up
+    '';
+
+    gl-config-edit = pkgs.writeShellScriptBin "gl-config-edit" ''
+      ${pkgs.nano}/bin/nano ${path}/.env
     '';
 in
 pkgs.mkShell {
@@ -40,10 +57,16 @@ pkgs.mkShell {
   buildInputs = [
     pkgs.dotenv-linter
     pkgs.docker
+    pkgs.nano
+    # ipfs
+    pkgs.kubo
     gl-docker-build
+    gl-docker-run
+    gl-config-edit
   ];
 
   shellHook = ''
+    ${ensure-home}
     ${source-env}
     ${builtins.concatStringsSep "" (map ensure-var required-vars)}
   '';

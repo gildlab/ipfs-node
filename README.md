@@ -61,3 +61,15 @@ The shell requires that some environment variables are set.
 Ngrok auth token can be found: https://dashboard.ngrok.com/get-started/your-authtoken
 
 Ngrok domains can be setup: https://dashboard.ngrok.com/cloud-edge/domains
+
+These values can be changed later by modifying
+
+#### Available commands
+
+Inside the nix shell the following commands are available.
+
+`gl-docker-build`: Builds and tags all docker files.
+
+`gl-docker-run`: Uses docker compose to bring all dockers up.
+
+`gl-config-edit`: Opens the .env file in nano text editor.
