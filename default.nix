@@ -16,7 +16,9 @@ let
       if [[ -f "${path}/.env" ]]
         then
           ${pkgs.dotenv-linter}/bin/dotenv-linter ${path}/.env
+          set -o allexport
           source ${path}/.env
+          set +o allexport
         else
           touch ${path}/.env
       fi
