@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 set -o errexit
 set -o nounset
@@ -21,26 +21,63 @@ printf 'Waiting for Docker to start...\n\n'
 sleep 5
 
 # Docker Compose
-sudo wget --output-document=/usr/local/bin/docker-compose "https://github.com/docker/compose/releases/download/$(wget --quiet --output-document=- https://api.github.com/repos/docker/compose/releases/latest | grep --perl-regexp --only-matching '"tag_name": "\K.*?(?=")')/run.sh"
+sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 sudo chmod +x /usr/local/bin/docker-compose
-sudo wget --output-document=/etc/bash_completion.d/docker-compose "https://raw.githubusercontent.com/docker/compose/$(docker-compose version --short)/contrib/completion/bash/docker-compose"
 printf '\nDocker Compose installed successfully\n\n'
+printf $(docker-compose --version)
+
+if [[ -f ".env" ]]
+then
+    printf "\n\nexporting .env variables.\n\n"
+    source .env
+fi
 
 # Get .env variables
-echo "Enter ngrok auth token : "
-read ngrok_auth_token
-echo "NGROK_AUTH=${ngrok_auth_token}" > .env
+if [[ ! -v NGROK_AUTH ]]
+then
+    read -p "Enter ngrok auth token : " ngrok_auth_token
+    printf "NGROK_AUTH=${ngrok_auth_token}\n" >> .env
+else
+    printf "ngrok auth token found.\n\n"
+fi
 
-echo "Enter ngrok hostname : "
-read ngrok_hostname
-echo "NGROK_HOSTNAME=${ngrok_hostname}" >> .env
+if [[ ! -v NGROK_HOSTNAME ]]
+then
+    read -p "Enter ngrok hostname : " ngrok_hostname
+    if [[ ! -z "$ngrok_hostname" ]]
+    then
+    	printf "\nNGROK_HOSTNAME=${ngrok_hostname}" >> .env
+    fi
+else
+    printf "ngrok hostname found.\n\n"
+fi
 
-echo "Enter ngrok region : "
-read ngrok_region
-echo "NGROK_REGION=${ngrok_region}" >> .env
+if [[ ! -v NGROK_REGION ]]
+then
+    read -p "Enter ngrok region : " ngrok_region
+    if [[ ! -z "$ngrok_region" ]]
+    then
+    	printf "\nNGROK_REGION=${ngrok_region}" >> .env
+    fi
+else
+    printf "ngrok region found.\n\n"
+fi
+
+source .env
 
 # Start Docker
 docker-compose up -d
-sleep 60
+sleep 30
 docker-compose exec ipfs ipfs config --json API.HTTPHeaders.Access-Control-Allow-Origin '["*"]'
 docker-compose exec ipfs ipfs config --json API.HTTPHeaders.Access-Control-Allow-Methods '["PUT", "GET", "POST"]'
+
+# add ReceiptMetadata.json to ipfs
+curl -F file=@ReceiptMetadata.json 'http://127.0.0.1:5001/api/v0/add?pin=true&to-files=/'
+
+# opening firewall ports for communication
+sudo ufw enable
+sudo ufw allow 4001/tcp
+sudo ufw allow 4001/udp
+sudo ufw allow 5001/tcp
+sudo ufw allow 8080/tcp
+sudo ufw allow 80/tcp

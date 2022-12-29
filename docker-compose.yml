@@ -9,6 +9,7 @@ services:
       - '4001:4001'
     volumes:
       - ./data/ipfs:/data/ipfs
+      - ./export:/export
   nginx:
     image: nginx
     ports:
@@ -25,7 +26,7 @@ services:
       - NGROK_AUTH=${NGROK_AUTH}
       - NGROK_PROTOCOL=http
       - NGROK_PORT=nginx:80
-      - NGROK_REGION=${REGION}
-      - NGROK_HOSTNAME=${HOSTNAME}
+      - NGROK_REGION=${NGROK_REGION}
+      - NGROK_HOSTNAME=${NGROK_HOSTNAME}
     depends_on:
       - nginx
