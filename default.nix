@@ -92,6 +92,8 @@ let
       ${gl-enable-firewall}/bin/gl-enable-firewall
       sudo rm -f ${path}/volumes/ipfs/data/ipfs/repo.lock ${path}/volumes/ipfs/data/ipfs/datastore/LOCK
 
+      ${pkgs.docker}/bin/docker network prune -f
+
       ${pkgs.docker-compose}/bin/docker-compose up -d
     '';
 
