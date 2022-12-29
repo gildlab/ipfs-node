@@ -57,11 +57,14 @@ let
         ${temp-main}
         repo=gildlab/ipfs-node
 
-        ${pkgs.docker}/bin/docker build -t ''${repo}:ipfs -f ./ipfs/Dockerfile ./ipfs
+        ${pkgs.docker}/bin/docker build -t ''${repo}:ipfs -f ./ipfs
         ${pkgs.docker}/bin/docker push ''${repo}:ipfs
 
-        ${pkgs.docker}/bin/docker build -t ''${repo}:nginx -f ./nginx/Dockerfile ./nginx
+        ${pkgs.docker}/bin/docker build -t ''${repo}:nginx ./nginx
         ${pkgs.docker}/bin/docker push ''${repo}:nginx
+
+        ${pkgs.docker}/bin/docker build -t ''${repo}:ngrok -f ./ngrok
+        ${pkgs.docker}/bin/docker push ''${repo}:ngrok
     )
     '';
 
