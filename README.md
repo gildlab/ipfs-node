@@ -55,6 +55,21 @@ If docker is installed correctly you should be able to check the version.
 $ docker --version
 ```
 
+To verify that the current user can run docker commands without root access.
+
+```
+$ docker run hellow-world
+```
+
+If this doesn't work then run the post installation steps https://docs.docker.com/engine/install/linux-postinstall/
+
+```
+$ sudo groupadd docker
+$ sudo usermod -aG docker $USER
+```
+
+You may need to restart the machine for these changes to take effect.
+
 To push docker boxes that you build you will need to log into docker hub.
 
 ```
