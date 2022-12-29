@@ -67,14 +67,14 @@ let
 
     gl-enable-firewall = pkgs.writeShellScriptBin "gl-enable-firewall" ''
       ${cp-firewall-apps}
-      sudo ufw allow "Gildlab IPFS Node"
-      sudo ufw allow "Gildlab Nginx HTTPS"
+      sudo ufw allow "gildlab-ipfs"
+      sudo ufw allow "gildlab-nginx-https"
     '';
 
     gl-disable-firewall = pkgs.writeShellScriptBin "gl-disable-firewall" ''
       ${cp-firewall-apps}
-      sudo ufw delete allow "Gildlab IPFS Node"
-      sudo ufw delete allow "Gildlab Nginx HTTPS"
+      sudo ufw delete allow "gildlab-ipfs"
+      sudo ufw delete allow "gildlab-nginx-https"
     '';
 
     gl-docker-run = pkgs.writeShellScriptBin "gl-docker-run" ''
