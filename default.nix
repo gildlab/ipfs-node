@@ -102,6 +102,7 @@ pkgs.mkShell {
   buildInputs = [
     pkgs.dotenv-linter
     pkgs.docker
+    pkgs.docker-compose
     pkgs.nano
     pkgs.wget
     # ipfs
