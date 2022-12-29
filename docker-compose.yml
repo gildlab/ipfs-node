@@ -19,7 +19,7 @@ services:
     depends_on:
       - ipfs
   ngrok:
-    image: wernight/ngrok
+    image: gildlab/ipfs-node:ngrok
     environment:
       - NGROK_AUTH=${NGROK_AUTH}
       - NGROK_PROTOCOL=http
