@@ -60,10 +60,27 @@ let
     )
     '';
 
+    cp-firewall-apps = ''
+      cp ufw/gildlab /etc/ufw/applications.d/gildlab
+    '';
+
+    gl-enable-firewall = pkgs.writeShellScriptBin "gl-enable-firewall" ''
+      ${cp-firewall-apps}
+      sudo ufw allow "Gildlab IPFS Node"
+      sudo ufw allow "Gildlab Nginx HTTPS"
+    '';
+
+    gl-disable-firewall = pkgs.writeShellScriptBin "gl-disable-firewall" ''
+      ${cp-firewall-apps}
+      sudo ufw delete allow "Gildlab IPFS Node"
+      sudo ufw delete allow "Gildlab Nginx HTTPS"
+    '';
+
     gl-docker-run = pkgs.writeShellScriptBin "gl-docker-run" ''
       ${temp-main}
       ${pkgs.docker-compose}/bin/docker-compose down
 
+      ${gl-enable-firewall}/bin/gl-enable-firewall
       sudo rm -f ${path}/volumes/ipfs/data/ipfs/repo.lock ${path}/volumes/ipfs/data/ipfs/datastore/LOCK
 
       ${pkgs.docker-compose}/bin/docker-compose up
@@ -87,6 +104,8 @@ pkgs.mkShell {
     gl-docker-build
     gl-docker-run
     gl-config-edit
+    gl-enable-firewall
+    gl-disable-firewall
   ];
 
   shellHook = ''
