@@ -41,12 +41,16 @@ let
       fi
     '';
 
-    gl-docker-build = pkgs.writeShellScriptBin "gl-docker-build" ''
-    (
+    temp-main = ''
         dir=$(mktemp -d)
         cd $dir
         wget https://github.com/gildlab/ipfs-node/archive/main.tar.gz
         tar --strip-components=1 -zxvf main.tar.gz
+    '';
+
+    gl-docker-build = pkgs.writeShellScriptBin "gl-docker-build" ''
+    (
+        ${temp-main}
         tag=gildlab/ipfs-node:ipfs
         ${pkgs.docker}/bin/docker build -f ./Dockerfile.ipfs -t ''${tag} .
         ${pkgs.docker}/bin/docker push ''${tag}
@@ -54,6 +58,7 @@ let
     '';
 
     gl-docker-run = pkgs.writeShellScriptBin "gl-docker-run" ''
+      ${temp-main}
       ${pkgs.docker-compose}/bin/docker-compose up
     '';
 
