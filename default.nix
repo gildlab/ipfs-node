@@ -56,8 +56,14 @@ let
     (
         ${temp-main}
         rep=gildlab/ipfs-node
-        (cd ipfs ${pkgs.docker}/bin/docker build -t ''${repo}:ipfs .)
-        (cd nginx ${pkgs.docker}/bin/docker build -t ''${repo}:nginx .)
+        (
+          cd ipfs
+          ${pkgs.docker}/bin/docker build -t ''${repo}:ipfs .
+        )
+        (
+          cd nginx
+          ${pkgs.docker}/bin/docker build -t ''${repo}:nginx .
+        )
         ${pkgs.docker}/bin/docker push ''${tag}
     )
     '';
