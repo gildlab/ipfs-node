@@ -92,6 +92,11 @@ let
       ${pkgs.docker-compose}/bin/docker-compose up -d
     '';
 
+    gl-docker-stop = pkgs.writeShellScriptBin "gl-docker-stop" ''
+      ${temp-main}
+      ${pkgs.docker-compose}/bin/docker-compose down
+    '';
+
     gl-config-edit = pkgs.writeShellScriptBin "gl-config-edit" ''
       ${pkgs.nano}/bin/nano ${path}/.env
     '';
@@ -110,6 +115,7 @@ pkgs.mkShell {
     pkgs.ix
     gl-docker-build
     gl-docker-run
+    gl-docker-stop
     gl-config-edit
     gl-enable-firewall
     gl-disable-firewall
