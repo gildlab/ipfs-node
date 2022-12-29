@@ -9,3 +9,4 @@ jobs:
         with:
           nix_path: nixpkgs=channel:nixos-unstable
       - run: nix-shell --run "docker --version"
+      - run: nix-shell --run "docker-compose --version"
