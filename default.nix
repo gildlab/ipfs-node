@@ -95,9 +95,12 @@ let
       ${pkgs.docker-compose}/bin/docker-compose up -d
     '';
 
+    images = ["gildlab/ipfs-node:ipfs" "gildlab/ipfs-node:nginx" "gildlab/ipfs-node:ngrok"];
+    docker-stop = image: ''
+      ${pkgs.docker}/bin/docker rm $(${pkgs.docker}/bin/docker stop $(${pkgs.docker}/bin/docker ps -a -q --filter "ancestor=${image}"))
+    '';
     gl-docker-stop = pkgs.writeShellScriptBin "gl-docker-stop" ''
-      ${temp-main}
-      ${pkgs.docker-compose}/bin/docker-compose down
+      ${builtins.concatStringsSep "" (map docker-stop images)}
     '';
 
     gl-config-edit = pkgs.writeShellScriptBin "gl-config-edit" ''
