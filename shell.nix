@@ -1,14 +1,39 @@
 { pkgs ? import <nixpkgs> {} }:
 let
+    ensure-env = ''
+      if [[ -f ".env" ]]
+        then
+          source .env
+        else
+          cp .env.example .env
+      fi
+    '';
+
+    gl-reset-env = pkgs.writeShellScriptBin "gl-reset-env" ''
+    rm .env
+    ${ensure-env}
+    '';
+
+    ensure-var = var-name: ''
+      echo "''${${var-name}}"
+      if [ -z "''${${var-name}}" ];
+      then
+        echo "${var-name} is empty! Update it in .env by running \`nano .env\`" >&2
+        exit 1
+      else
+        echo "${var-name} is set"
+      fi
+    '';
+
+    check-docker = ''
+    '';
+
     gl-doctor = pkgs.writeShellScriptBin "gl-doctor" ''
+        ${ensure-env}
+
         ${pkgs.dotenv-linter}/bin/dotenv-linter
 
-        if [ -z "$NGROK_AUTH" ]
-        then
-            echo "\$NGROK_AUTH is empty"
-        else
-            echo "\$NGROK_AUTH is something"
-        fi
+        ${builtins.concatStringsSep "" (map ensure-var ["NGROK_AUTH" "NGROK_HOSTNAME" "NGROK_REGION"])}
     '';
 
     gl-docker-build = pkgs.writeShellScriptBin "gl-docker-build" ''
@@ -21,11 +46,13 @@ pkgs.mkShell {
   buildInputs = [
     pkgs.docker-client
     pkgs.dotenv-linter
+    pkgs.nano
+    gl-reset-env
     gl-doctor
     gl-docker-build
   ];
 
   shellHook = ''
-    source .env
+    ${ensure-env}
   '';
 }

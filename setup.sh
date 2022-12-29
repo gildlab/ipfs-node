@@ -5,11 +5,7 @@ set -o nounset
 
 IFS=$(printf '\n\t')
 
-if [[ -f ".env" ]]
-then
-    printf "\n\nexporting .env variables.\n\n"
-    source .env
-fi
+
 
 # Get .env variables
 if [[ ! -v NGROK_AUTH ]]
