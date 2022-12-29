@@ -6,7 +6,7 @@
     })
     { } }:
 let
-    tarball-url = "https://abc.gildlab.xyz";
+    tarball-url = "https://github.com/gildlab/ipfs-node/archive/main.tar.gz";
     path = "$HOME/.config/gildlab/ipfs-node";
     ensure-home = ''
       export GILDLAB_IPFS_NODE_BASE_PATH=${path}
