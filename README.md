@@ -55,3 +55,9 @@ Once you have nix shell and docker installed you can enter the nix shell with al
 ```
 $ nix-shell https://github.com/gildlab/ipfs-node/archive/main.tar.gz?`date -Iseconds`
 ```
+
+The shell requires that some environment variables are set.
+
+Ngrok auth token can be found: https://dashboard.ngrok.com/get-started/your-authtoken
+
+Ngrok domains can be setup: https://dashboard.ngrok.com/cloud-edge/domains
