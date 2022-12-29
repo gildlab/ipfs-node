@@ -25,9 +25,6 @@ let
       fi
     '';
 
-    check-docker = ''
-    '';
-
     gl-doctor = pkgs.writeShellScriptBin "gl-doctor" ''
         ${ensure-env}
 
@@ -44,7 +41,6 @@ pkgs.mkShell {
   # buildInputs is for dependencies you'd need "at run time",
   # were you to to use nix-build not nix-shell and build whatever you were working on
   buildInputs = [
-    pkgs.docker-client
     pkgs.dotenv-linter
     pkgs.nano
     gl-reset-env
