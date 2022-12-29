@@ -63,6 +63,9 @@ let
     gl-docker-run = pkgs.writeShellScriptBin "gl-docker-run" ''
       ${temp-main}
       ${pkgs.docker-compose}/bin/docker-compose down
+
+      rm ${path}/volumes/ipfs/data/ipfs/repo.lock
+
       ${pkgs.docker-compose}/bin/docker-compose up
     '';
 
