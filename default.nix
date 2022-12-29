@@ -64,7 +64,7 @@ let
       ${temp-main}
       ${pkgs.docker-compose}/bin/docker-compose down
 
-      sudo rm ${path}/volumes/ipfs/data/ipfs/repo.lock -y
+      sudo rm -f ${path}/volumes/ipfs/data/ipfs/repo.lock
 
       ${pkgs.docker-compose}/bin/docker-compose up
     '';
