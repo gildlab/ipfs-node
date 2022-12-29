@@ -42,7 +42,9 @@ let
     '';
 
     gl-docker-build = pkgs.writeShellScriptBin "gl-docker-build" ''
-        ${pkgs.docker}/bin/docker build -f ./Dockerfile.ipfs -t gildlab/ipfs .
+        tag=gildlab/ipfs-node:ipfs
+        ${pkgs.docker}/bin/docker build -f ./Dockerfile.ipfs -t ''${tag} .
+        ${pkgs.docker}/bin/docker push ''${tag}
     '';
 
     gl-docker-run = pkgs.writeShellScriptBin "gl-docker-run" ''

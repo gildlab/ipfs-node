@@ -68,8 +68,8 @@ These values can be changed later by modifying
 
 Inside the nix shell the following commands are available.
 
-`gl-docker-build`: Builds and tags all docker files.
+`nix-shell --run gl-docker-build`: Builds and tags all docker files.
 
-`gl-docker-run`: Uses docker compose to bring all dockers up.
+`nix-shell --run gl-docker-run`: Uses docker compose to bring all dockers up.
 
-`gl-config-edit`: Opens the .env file in nano text editor.
+`nix-shell --run gl-config-edit`: Opens the .env file in nano text editor.
