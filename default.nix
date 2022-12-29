@@ -62,6 +62,7 @@ let
 
     gl-docker-run = pkgs.writeShellScriptBin "gl-docker-run" ''
       ${temp-main}
+      ${pkgs.docker-compose}/bin/docker-compose down
       ${pkgs.docker-compose}/bin/docker-compose up
     '';
 
