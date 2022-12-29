@@ -62,7 +62,7 @@ let
     '';
 
     cp-firewall-apps = ''
-      cp ufw/gildlab /etc/ufw/applications.d/gildlab
+      sudo cp ufw/gildlab /etc/ufw/applications.d/gildlab
     '';
 
     gl-enable-firewall = pkgs.writeShellScriptBin "gl-enable-firewall" ''
