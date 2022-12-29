@@ -15,7 +15,7 @@ services:
     ports:
       - "80"
     volumes:
-      - ${GILDLAB_IPFS_NODE_BASE_PATH}/volumes/nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - ${GILDLAB_IPFS_NODE_BASE_PATH}/volumes/nginx/conf.d:/etc/nginx/conf.d
     links:
       - "ipfs:ipfs.gildlab.xyz"
     depends_on:
