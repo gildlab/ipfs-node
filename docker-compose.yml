@@ -10,6 +10,7 @@ services:
     volumes:
       - ./data/ipfs:/data/ipfs
       - ./export:/export
+      - ./001-init.sh:/container-init.d/001-test.sh \
   nginx:
     image: nginx
     ports:
