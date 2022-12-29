@@ -71,6 +71,7 @@ let
 
     gl-enable-firewall = pkgs.writeShellScriptBin "gl-enable-firewall" ''
       ${cp-firewall-apps}
+      sudo ufw enable
       sudo ufw allow "gildlab-ipfs"
       sudo ufw allow "gildlab-nginx-https"
     '';
