@@ -4,6 +4,15 @@
 
 ONLY UBUNTU WITH SUDO IS SUPPORTED AT THIS TIME
 
+### Install curl
+
+This may or may not already be installed in ubuntu.
+
+```
+sudo apt-get update
+sudo apt-get install curl -y
+```
+
 ### Install nix
 
 Install nix according to the instructions at https://nixos.org/download.html
@@ -37,4 +46,12 @@ If docker is installed correctly you should be able to check the version.
 
 ```
 $ docker --version
+```
+
+### Enter the nix shell for this repository
+
+Once you have nix shell and docker installed you can enter the nix shell with all the commands in this repository.
+
+```
+$ nix-shell https://github.com/gildlab/ipfs-node/archive/main.tar.gz?`date -Iseconds`
 ```
