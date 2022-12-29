@@ -79,6 +79,7 @@ pkgs.mkShell {
     pkgs.wget
     # ipfs
     pkgs.kubo
+    pkgs.ix
     gl-docker-build
     gl-docker-run
     gl-config-edit
