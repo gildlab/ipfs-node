@@ -10,6 +10,9 @@ let
     ensure-home = ''
       export GILDLAB_IPFS_NODE_BASE_PATH=${path}
       mkdir -p ${path}
+      mkdir -p ${path}/volumes/ipfs/data/ipfs
+      mkdir -p ${path}/volumes/ipfs/export
+      mkdir -p ${path}/volumes/nginx
     '';
 
     source-env = ''

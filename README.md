@@ -29,6 +29,13 @@ If nix is installed correctly you should be able to check the version.
 $ nix-shell --version
 ```
 
+The nix shell might not be immediately visible in the shell that you installed
+it from. You can enter a new shell.
+
+```
+$ exec $SHELL
+```
+
 ### Install docker engine
 
 There are many ways to install docker https://docs.docker.com
