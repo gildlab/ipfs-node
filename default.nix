@@ -1,11 +1,9 @@
 { pkgs ? import <nixpkgs> {} }:
 let
-    ensure-env = ''
+    source-env = ''
       if [[ -f ".env" ]]
         then
           source .env
-        else
-          cp .env.example .env
       fi
     '';
 
@@ -20,7 +18,7 @@ let
       echo "''${${var-name}}"
       if [ -z "''${${var-name}}" ];
       then
-        read -p "Please set ${var-name}" ${var-name}
+        read -p "Please set ${var-name}: " ${var-name}
       else
         echo "${var-name} is set"
       fi
@@ -50,6 +48,7 @@ pkgs.mkShell {
   ];
 
   shellHook = ''
+    ${source-env}
     ${builtins.concatStringsSep "" (map ensure-var required-vars)}
   '';
 }
