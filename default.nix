@@ -50,6 +50,6 @@ pkgs.mkShell {
   ];
 
   shellHook = ''
-    ${builtins.concatStringSep "" (map ensure-var required-vars)}
+    ${builtins.concatStringsSep "" (map ensure-var required-vars)}
   '';
 }
