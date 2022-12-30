@@ -132,7 +132,7 @@ let
       | ${pkgs.jq}/bin/jq -r '${sg-jq}' \
       | while read hash ; do \
         echo "Pinning $hash"; \
-        curl -X POST "http://ipfs/api/v0/pin/add?arg=$hash"; \
+        curl -X POST "http://ipfs:5001/api/v0/pin/add?arg=$hash"; \
       done;
     '';
 
