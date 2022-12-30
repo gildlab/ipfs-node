@@ -1,0 +1,9 @@
+[gildlab-ipfs]
+title=Gildlab IPFS Node
+description=Rules provided by Gildlab for an IPFS node.
+ports=4001|5001/tcp|8080/tcp
+
+[gildlab-nginx]
+title=Gildlab Nginx
+description=Rules provided by Gildlab for Nginx.
+ports=80

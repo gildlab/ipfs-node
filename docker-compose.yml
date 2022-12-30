@@ -37,7 +37,7 @@ services:
     image: vishalkale151071/ipfs-pinning:deployer-v0.1
     volumes:
       - ./pinning.log:/home/pinning.log
-    links: 
+    links:
       - "ipfs:ipfs.gildlab.xyz"
     depends_on:
       - ipfs
