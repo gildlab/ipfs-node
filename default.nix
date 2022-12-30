@@ -94,6 +94,8 @@ let
 
       ${pkgs.docker}/bin/docker network prune -f
 
+      echo $NGROK_AUTH
+
       ${pkgs.docker-compose}/bin/docker-compose up
     '';
 
