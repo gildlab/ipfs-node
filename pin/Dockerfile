@@ -1,15 +1,7 @@
-FROM python:latest
+FROM nixos/nix
 
-WORKDIR /home
+RUN nix-channel --update
 
-COPY main.py ./
-COPY requirements.txt ./
-COPY ReceiptMetadata.json ./
-COPY config.json ./
-COPY pinning.log ./
+ADD ./default.nix default.nix
 
-ENV INSIDE_DOCKER Yes
-
-RUN ["pip3", "install", "-r", "requirements.txt"]
-
-CMD ["python", "./main.py"]
+RUN nix-shell --run "exit"

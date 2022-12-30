@@ -65,6 +65,9 @@ let
 
         ${pkgs.docker}/bin/docker build -t ''${repo}:ngrok ./ngrok
         ${pkgs.docker}/bin/docker push ''${repo}:ngrok
+
+        ${pkgs.docker}/bin/docker build -f ./pin/Dockerfile -t ''${repo}:pin .
+        ${pkgs.docker}/bin/docker push ''${repo}:pin
     )
     '';
 
@@ -126,7 +129,7 @@ let
       | ${pkgs.jq}/bin/jq -r '${sg-jq}' \
       | while read hash ; do \
         echo "Pinning $hash"; \
-        ipfs pin add "$hash" -r --progress; \
+        curl -X POST "http://ipfs/api/v0/pin/add?arg=$hash"; \
       done;
     '';
 
