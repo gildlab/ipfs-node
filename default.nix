@@ -113,6 +113,23 @@ let
     gl-config-edit = pkgs.writeShellScriptBin "gl-config-edit" ''
       ${pkgs.nano}/bin/nano ${path}/.env
     '';
+
+    sg-url = "https://api.thegraph.com/subgraphs/name/gild-lab/offchainassetvault";
+    deployer = "0x8058ad7c22fdc8788fe4cb1dac15d6e976127324";
+
+    sg-query = "{ \"query\": \"{ deployer(id: \\\"${deployer}\\\"){ hashes(first:100, skip: 0, orderBy:timestamp, orderDirection: asc){ hash } } }\" }";
+
+    sg-jq = ".data.deployer.hashes[].hash | select(startswith(\"Qm\"))";
+
+    gl-pins = pkgs.writeShellScriptBin "gl-pins" ''
+      ${pkgs.curl}/bin/curl -X POST ${sg-url} -d '${sg-query}' \
+      | ${pkgs.jq}/bin/jq -r '${sg-jq}' \
+      | while read hash ; do \
+        echo "Pinning $hash"; \
+        ipfs pin add "$hash" -r --progress; \
+      done;
+    '';
+
 in
 pkgs.mkShell {
   # buildInputs is for dependencies you'd need "at run time",
@@ -126,6 +143,8 @@ pkgs.mkShell {
     # ipfs
     pkgs.kubo
     pkgs.ix
+    pkgs.curl
+    pkgs.jq
     gl-docker-build
     gl-docker-run
     gl-docker-stop
@@ -133,6 +152,7 @@ pkgs.mkShell {
     gl-enable-firewall
     gl-disable-firewall
     gl-docker-logs
+    gl-pins
   ];
 
   shellHook = ''
