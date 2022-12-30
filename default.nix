@@ -94,7 +94,7 @@ let
 
       ${pkgs.docker}/bin/docker network prune -f
 
-      ${pkgs.docker-compose}/bin/docker-compose up
+      ${pkgs.docker-compose}/bin/docker-compose up -d
     '';
 
     gl-docker-logs = pkgs.writeShellScriptBin "gl-docker-logs" ''
