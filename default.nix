@@ -97,6 +97,11 @@ let
       ${pkgs.docker-compose}/bin/docker-compose up -d
     '';
 
+    gl-docker-logs = pkgs.writeShellScriptBin "gl-docker-logs" ''
+      ${temp-main}
+      ${pkgs.docker-compose}/bin/docker-compose logs
+    '';
+
     images = ["gildlab/ipfs-node:ipfs" "gildlab/ipfs-node:nginx" "gildlab/ipfs-node:ngrok"];
     docker-stop = image: ''
       ${pkgs.docker}/bin/docker rm $(${pkgs.docker}/bin/docker stop $(${pkgs.docker}/bin/docker ps -a -q --filter "ancestor=${image}"))
@@ -127,6 +132,7 @@ pkgs.mkShell {
     gl-config-edit
     gl-enable-firewall
     gl-disable-firewall
+    gl-docker-logs
   ];
 
   shellHook = ''
