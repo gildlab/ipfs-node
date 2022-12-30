@@ -20,7 +20,6 @@ let
     source-env = ''
       if [[ -f "${path}/.env" ]]
         then
-          ${pkgs.dotenv-linter}/bin/dotenv-linter ${path}/.env
           set -o allexport
           source ${path}/.env
           set +o allexport
@@ -117,6 +116,7 @@ let
     gl-config-edit = pkgs.writeShellScriptBin "gl-config-edit" ''
       ${builtins.concatStringsSep "" (map ensure-var required-vars)}
       ${pkgs.nano}/bin/nano ${path}/.env
+      ${pkgs.dotenv-linter}/bin/dotenv-linter ${path}/.env
       ${source-env}
     '';
 
@@ -163,5 +163,6 @@ pkgs.mkShell {
 
   shellHook = ''
     ${ensure-home}
+    ${source-env}
   '';
 }
