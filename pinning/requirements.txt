@@ -1,3 +1,0 @@
-python-graphql-client
-logger
-requests
