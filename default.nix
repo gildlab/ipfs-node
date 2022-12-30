@@ -14,6 +14,7 @@ let
       mkdir -p ${path}/volumes/ipfs/data/ipfs
       mkdir -p ${path}/volumes/ipfs/export
       mkdir -p ${path}/volumes/nginx
+      touch ${path}/.env
     '';
 
     source-env = ''
@@ -114,7 +115,9 @@ let
     '';
 
     gl-config-edit = pkgs.writeShellScriptBin "gl-config-edit" ''
+      ${builtins.concatStringsSep "" (map ensure-var required-vars)}
       ${pkgs.nano}/bin/nano ${path}/.env
+      ${source-env}
     '';
 
     sg-url = "https://api.thegraph.com/subgraphs/name/gild-lab/offchainassetvault";
@@ -160,7 +163,5 @@ pkgs.mkShell {
 
   shellHook = ''
     ${ensure-home}
-    ${source-env}
-    ${builtins.concatStringsSep "" (map ensure-var required-vars)}
   '';
 }
