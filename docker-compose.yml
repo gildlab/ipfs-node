@@ -14,8 +14,6 @@ services:
     image: gildlab/ipfs-node:nginx
     ports:
       - "80"
-    links:
-      - "ipfs:ipfs.gildlab.xyz"
     depends_on:
       - ipfs
   ngrok:
