@@ -130,10 +130,11 @@ let
     gl-pins = pkgs.writeShellScriptBin "gl-pins" ''
       ${pkgs.curl}/bin/curl -X POST ${sg-url} -d '${sg-query}' \
       | ${pkgs.jq}/bin/jq -r '${sg-jq}' \
-      | while read hash ; do \
-        echo "Pinning $hash"; \
-        curl -X POST "http://ipfs:5001/api/v0/pin/add?arg=$hash"; \
-      done;
+      | while read pin; \
+          do \
+            echo "$pin"; \
+            ipfs pin add --progress "$pin"; \
+          done;
     '';
 
 in

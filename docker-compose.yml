@@ -2,6 +2,7 @@ version: '3'
 
 services:
   ipfs:
+    container_name: ipfs
     image: gildlab/ipfs-node:ipfs
     ports:
       - "5001"
@@ -11,12 +12,14 @@ services:
       - ${GILDLAB_IPFS_NODE_BASE_PATH}/volumes/ipfs/data/ipfs:/data/ipfs
       - ${GILDLAB_IPFS_NODE_BASE_PATH}/volumes/ipfs/export:/export
   nginx:
+    container_name: nginx
     image: gildlab/ipfs-node:nginx
     ports:
       - "80"
     depends_on:
       - ipfs
   ngrok:
+    container_name: ngrok
     image: gildlab/ipfs-node:ngrok
     environment:
       - NGROK_AUTH=${NGROK_AUTH}
@@ -27,6 +30,7 @@ services:
     depends_on:
       - nginx
   pin:
+    container_name: pin
     image: gildlab/ipfs-node:pin
     depends_on:
       - ipfs
