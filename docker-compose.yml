@@ -29,8 +29,8 @@ services:
       - NGROK_HOSTNAME=${NGROK_HOSTNAME}
     depends_on:
       - nginx
-  pin:
-    container_name: pin
-    image: gildlab/ipfs-node:pin
-    depends_on:
-      - ipfs
+  # pin:
+  #   container_name: pin
+  #   image: gildlab/ipfs-node:pin
+  #   depends_on:
+  #     - ipfs

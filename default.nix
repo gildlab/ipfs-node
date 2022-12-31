@@ -133,7 +133,7 @@ let
       | while read pin; \
           do \
             echo "$pin"; \
-            ipfs pin add --progress "$pin"; \
+            ipfs pin add "$pin"; \
           done;
     '';
 
