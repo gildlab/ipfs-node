@@ -127,7 +127,7 @@ let
 
     sg-jq = ".data.deployer.hashes[].hash | select(startswith(\"Qm\"))";
 
-    gl-pins = pkgs.writeShellScriptBin "gl-pins" ''
+    gl-pinz = pkgs.writeShellScriptBin "gl-pinz" ''
       ${pkgs.curl}/bin/curl -X POST ${sg-url} -d '${sg-query}' \
       | ${pkgs.jq}/bin/jq -r '${sg-jq}' \
       | while read pin; \
@@ -159,7 +159,7 @@ pkgs.mkShell {
     gl-enable-firewall
     gl-disable-firewall
     gl-docker-logs
-    gl-pins
+    gl-pinz
   ];
 
   shellHook = ''
