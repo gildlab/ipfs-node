@@ -5,9 +5,9 @@ services:
     container_name: ipfs
     image: gildlab/ipfs-node:ipfs
     ports:
-      - "5001"
+      - "5001:5001"
       - "8080"
-      - "4001"
+      - "4001:4001"
     volumes:
       - ${GILDLAB_IPFS_NODE_BASE_PATH}/volumes/ipfs/data/ipfs:/data/ipfs
       - ${GILDLAB_IPFS_NODE_BASE_PATH}/volumes/ipfs/export:/export
