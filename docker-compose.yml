@@ -4,9 +4,10 @@ services:
   ipfs:
     container_name: ipfs
     image: gildlab/ipfs-node:ipfs
+    # https://docs.ipfs.tech/how-to/run-ipfs-inside-docker/#set-up
     ports:
-      - "5001"
-      - "8080"
+      - "127.0.0.1:5001:5001"
+      - "127.0.0.1:8080:8080"
       - "4001:4001"
     volumes:
       - ${GILDLAB_IPFS_NODE_BASE_PATH}/volumes/ipfs/data/ipfs:/data/ipfs
