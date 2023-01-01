@@ -87,9 +87,14 @@ let
       sudo ufw delete allow "gildlab-nginx"
     '';
 
+    ensure-required-vars = ''
+      ${builtins.concatStringsSep "" (map ensure-var required-vars)}
+      ${source-env}
+    '';
+
     gl-docker-run = pkgs.writeShellScriptBin "gl-docker-run" ''
       ${temp-main}
-      ${builtins.concatStringsSep "" (map ensure-var required-vars)}
+      ${ensure-required-vars}
       ${pkgs.docker-compose}/bin/docker-compose down
 
       ${gl-enable-firewall}/bin/gl-enable-firewall
