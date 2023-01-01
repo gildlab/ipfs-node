@@ -32,5 +32,5 @@ if command -v ipfs &> /dev/null
     then
         echo "$hashes" | xe -j10x ipfs pin add {}
     else
-        echo "$hashes" | xe -j10x curl -X POST http://ipfs:5001/api/v0/pin/add?arg={}
+        echo "$hashes" | xe -j10x curl -X POST 'http://ipfs:5001/api/v0/pin/add?arg={}'
 fi
