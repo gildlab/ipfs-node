@@ -2,8 +2,6 @@ FROM nixos/nix
 
 RUN nix-channel --update
 
-ADD ./default.nix default.nix
+ADD ./pin.sh pin.sh
 
-# RUN nix-shell --run "exit"
-
-CMD nix-shell https://abc.gildlab.xyz?$RANDOM --run "while true; do gl-pins; sleep 10; done"
+CMD ./pin.sh

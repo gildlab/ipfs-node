@@ -54,7 +54,6 @@ let
 
     gl-docker-build = pkgs.writeShellScriptBin "gl-docker-build" ''
     (
-        ${temp-main}
         repo=gildlab/ipfs-node
 
         ${pkgs.docker}/bin/docker build -t ''${repo}:ipfs ./ipfs
@@ -66,7 +65,7 @@ let
         ${pkgs.docker}/bin/docker build -t ''${repo}:ngrok ./ngrok
         ${pkgs.docker}/bin/docker push ''${repo}:ngrok
 
-        ${pkgs.docker}/bin/docker build -f ./pin/Dockerfile -t ''${repo}:pin .
+        ${pkgs.docker}/bin/docker build -t ''${repo}:pin ./pin
         ${pkgs.docker}/bin/docker push ''${repo}:pin
     )
     '';
