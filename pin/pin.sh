@@ -28,4 +28,9 @@ body=$( jq -n --arg query "$query" --arg id $id "$payload" );
 
 hashes=$( curl -X POST -d "$body" $url | jq -r "$jq_selector" );
 
-echo "$hashes" | xe -j10x curl -X POST http://ipfs:5001/api/v0/pin/add {}
+if command -v ipfs &> /dev/null
+    then
+        echo "$hashes" | xe -j10x ipfs pin add {}
+    else
+        echo "$hashes" | xe -j10x curl -X POST http://ipfs:5001/api/v0/pin/add {}
+fi
