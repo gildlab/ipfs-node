@@ -110,9 +110,9 @@ let
       ${pkgs.docker-compose}/bin/docker-compose logs
     '';
 
-    containers = ["gl_ipfs" "gl_nginx" "gl_ngrok"];
+    containers = ["gl_ipfs" "gl_nginx" "gl_ngrok" "gl_pin"];
     docker-stop = container: ''
-      ${pkgs.docker}/bin/docker rm $(${pkgs.docker}/bin/docker stop ${container})
+      ${pkgs.docker}/bin/docker rm $(${pkgs.docker}/bin/docker stop $(${pkgs.docker}/bin/docker ps -a -q --filter "name=${container}"))
     '';
     gl-docker-stop = pkgs.writeShellScriptBin "gl-docker-stop" ''
       ${builtins.concatStringsSep "" (map docker-stop containers)}
