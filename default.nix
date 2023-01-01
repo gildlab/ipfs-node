@@ -40,7 +40,7 @@ let
             echo "Failed to set ${var-name}" >&2
             exit 1
           else
-            echo "${var-name}=\"''${${var-name}}\"" >> ${path}/.env
+            echo "${var-name}=''${${var-name}}" >> ${path}/.env
         fi
       fi
     '';
