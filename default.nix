@@ -102,7 +102,7 @@ let
 
       ${pkgs.docker}/bin/docker network prune -f
 
-      ${pkgs.docker-compose}/bin/docker-compose up -d
+      ${pkgs.docker-compose}/bin/docker-compose up
     '';
 
     gl-docker-logs = pkgs.writeShellScriptBin "gl-docker-logs" ''
@@ -123,23 +123,6 @@ let
       ${pkgs.nano}/bin/nano ${path}/.env
       ${pkgs.dotenv-linter}/bin/dotenv-linter ${path}/.env
       ${source-env}
-    '';
-
-    sg-url = "https://api.thegraph.com/subgraphs/name/gild-lab/offchainassetvault";
-    deployer = "0x8058ad7c22fdc8788fe4cb1dac15d6e976127324";
-
-    sg-query = "{ \"query\": \"{ deployer(id: \\\"${deployer}\\\"){ hashes(first:100, skip: 0, orderBy:timestamp, orderDirection: asc){ hash } } }\" }";
-
-    sg-jq = ".data.deployer.hashes[].hash | select(startswith(\"Qm\"))";
-
-    gl-pins = pkgs.writeShellScriptBin "gl-pins" ''
-      ${pkgs.curl}/bin/curl -X POST ${sg-url} -d '${sg-query}' \
-      | ${pkgs.jq}/bin/jq -r '${sg-jq}' \
-      | while read pin; \
-          do \
-            echo "$pin"; \
-            curl -X POST "http://ipfs:5001/api/v0/pin/add/$pin"; \
-          done;
     '';
 
 in
