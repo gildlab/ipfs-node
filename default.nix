@@ -89,7 +89,7 @@ let
 
     gl-docker-run = pkgs.writeShellScriptBin "gl-docker-run" ''
       ${temp-main}
-      ${(map ensure-var required-vars)}
+      ${builtins.concatStringsSep "" (map ensure-var required-vars)}
       ${pkgs.docker-compose}/bin/docker-compose down
 
       ${gl-enable-firewall}/bin/gl-enable-firewall
