@@ -110,12 +110,12 @@ let
       ${pkgs.docker-compose}/bin/docker-compose logs
     '';
 
-    images = ["gildlab/ipfs-node:ipfs" "gildlab/ipfs-node:nginx" "gildlab/ipfs-node:ngrok"];
-    docker-stop = image: ''
-      ${pkgs.docker}/bin/docker rm $(${pkgs.docker}/bin/docker stop $(${pkgs.docker}/bin/docker ps -a -q --filter "ancestor=${image}"))
+    containers = ["gl_ipfs" "gl_nginx" "gl_ngrok"];
+    docker-stop = container: ''
+      ${pkgs.docker}/bin/docker rm $(${pkgs.docker}/bin/docker stop ${container})
     '';
     gl-docker-stop = pkgs.writeShellScriptBin "gl-docker-stop" ''
-      ${builtins.concatStringsSep "" (map docker-stop images)}
+      ${builtins.concatStringsSep "" (map docker-stop containers)}
     '';
 
     gl-config-edit = pkgs.writeShellScriptBin "gl-config-edit" ''
