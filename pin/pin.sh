@@ -1,6 +1,8 @@
 #!/usr/bin/env nix-shell
 #! nix-shell -i bash -p bash jq curl xe
 
+set -Eeuxo pipefail
+
 url='https://api.thegraph.com/subgraphs/name/gild-lab/offchainassetvault'
 id='0x8058ad7c22fdc8788fe4cb1dac15d6e976127324';
 query=$( cat << "QUERY"
