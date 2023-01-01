@@ -4,6 +4,7 @@ services:
   ipfs:
     container_name: gl_ipfs
     image: gildlab/ipfs-node:ipfs
+    restart: always
     # https://docs.ipfs.tech/how-to/run-ipfs-inside-docker/#set-up
     ports:
       - "127.0.0.1:5001:5001"
@@ -15,6 +16,7 @@ services:
   nginx:
     container_name: gl_nginx
     image: gildlab/ipfs-node:nginx
+    restart: always
     ports:
       - "80"
     depends_on:
@@ -22,6 +24,7 @@ services:
   ngrok:
     container_name: gl_ngrok
     image: gildlab/ipfs-node:ngrok
+    restart: always
     environment:
       - NGROK_AUTH=${NGROK_AUTH}
       - NGROK_PROTOCOL=http
@@ -33,6 +36,7 @@ services:
   pin:
     container_name: gl_pin
     image: gildlab/ipfs-node:pin
+    restart: always
     depends_on:
       ipfs:
         condition: service_healthy
