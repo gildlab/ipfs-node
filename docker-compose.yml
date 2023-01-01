@@ -34,4 +34,5 @@ services:
     container_name: gl_pin
     image: gildlab/ipfs-node:pin
     depends_on:
-      - ipfs
+      ipfs:
+        condition: service_healthy
