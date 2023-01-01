@@ -147,7 +147,6 @@ pkgs.mkShell {
     gl-enable-firewall
     gl-disable-firewall
     gl-docker-logs
-    gl-pins
   ];
 
   shellHook = ''
