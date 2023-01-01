@@ -1,6 +1,7 @@
 FROM ipfs/kubo
 
-RUN ipfs init
-RUN ipfs config profile apply server
-RUN ipfs config --json API.HTTPHeaders.Access-Control-Allow-Origin '["*"]'
-RUN ipfs config --json API.HTTPHeaders.Access-Control-Allow-Methods '["PUT", "GET", "POST"]'
+ADD ./container-init.d/001-set-profile.sh /container-init.d/001-set-profile.sh
+RUN chmod a+x /container-init.d/001-set-profile.sh
+
+ADD ./container-init.d/002-set-allow-origin.sh /container-init.d/002-set-allow-origin.sh
+RUN chmod a+x /container-init.d/002-set-allow-origin.sh /container-init.d/002-set-allow-origin.sh
