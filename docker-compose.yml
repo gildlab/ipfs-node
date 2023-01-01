@@ -33,7 +33,5 @@ services:
   pin:
     container_name: gl_pin
     image: gildlab/ipfs-node:pin
-    volumes:
-      - ${GILDLAB_IPFS_NODE_BASE_PATH}/volumes/pin/nix/store:/nix/store
     depends_on:
       - ipfs
