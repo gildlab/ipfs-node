@@ -127,13 +127,13 @@ let
 
     sg-jq = ".data.deployer.hashes[].hash | select(startswith(\"Qm\"))";
 
-    gl-pinz = pkgs.writeShellScriptBin "gl-pinz" ''
+    gl-pins = pkgs.writeShellScriptBin "gl-pins" ''
       ${pkgs.curl}/bin/curl -X POST ${sg-url} -d '${sg-query}' \
       | ${pkgs.jq}/bin/jq -r '${sg-jq}' \
       | while read pin; \
           do \
             echo "$pin"; \
-            ipfs pin add "$pin"; \
+            curl -X POST "http://ipfs:5001/api/v0/pin/add/$pin"; \
           done;
     '';
 
@@ -159,7 +159,7 @@ pkgs.mkShell {
     gl-enable-firewall
     gl-disable-firewall
     gl-docker-logs
-    gl-pinz
+    gl-pins
   ];
 
   shellHook = ''
