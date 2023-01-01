@@ -33,10 +33,3 @@ services:
       - NGROK_HOSTNAME=${NGROK_HOSTNAME}
     depends_on:
       - nginx
-  pin:
-    container_name: gl_pin
-    image: gildlab/ipfs-node:pin
-    restart: always
-    depends_on:
-      ipfs:
-        condition: service_healthy
