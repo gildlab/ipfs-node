@@ -1,4 +1,4 @@
 #!/bin/sh
-set -Eeuxo pipefail
+set -euxo pipefail
 
 ipfs config --json Addresses.Announce '["/dns4/'"$NGROK_HOSTNAME"'/tcp/'"$NGROK_PORT"'"]'
