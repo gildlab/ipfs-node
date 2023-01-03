@@ -93,7 +93,6 @@ let
     '';
 
     gl-docker-run = pkgs.writeShellScriptBin "gl-docker-run" ''
-      ${temp-main}
       ${ensure-required-vars}
       ${pkgs.docker-compose}/bin/docker-compose down
 

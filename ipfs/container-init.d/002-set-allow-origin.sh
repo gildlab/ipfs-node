@@ -1,5 +1,5 @@
 #!/bin/sh
-set -ex
+set -Eeuxo pipefail
 
 #https://github.com/ipfs-shipyard/go-ipfs-docker-examples/blob/main/gateway/ipfs-config.sh
 ipfs config --json API.HTTPHeaders.Access-Control-Allow-Origin '["*"]'

@@ -1,4 +1,4 @@
 #!/bin/sh
-set -ex
+set -Eeuxo pipefail
 
 ipfs config profile apply server
