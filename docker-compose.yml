@@ -40,3 +40,4 @@ services:
     healthcheck:
       test: ["CMD", "nix-shell", "/pin.sh"]
       interval: 30s
+      timeout: 3600
