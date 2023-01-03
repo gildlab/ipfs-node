@@ -14,4 +14,4 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - run: docker build -t gildlab/ipfs-node:ngrok ./ngrok
-      - run: docker push -t gildlab/ipfs-node:ngrok
+      - run: docker push gildlab/ipfs-node:ngrok
