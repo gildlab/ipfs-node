@@ -118,6 +118,11 @@ let
       ${builtins.concatStringsSep "" (map docker-stop containers)}
     '';
 
+    gl-docker-reup = pkgs.writeShellScriptBin "gl-docker-reup" ''
+    ${gl-docker-stop}/bin/gl-docker-stop
+    ${gl-docker-run}/bin/gl-docker-run
+    '';
+
     gl-config-edit = pkgs.writeShellScriptBin "gl-config-edit" ''
       ${builtins.concatStringsSep "" (map ensure-var required-vars)}
       ${pkgs.nano}/bin/nano ${path}/.env
@@ -147,6 +152,7 @@ pkgs.mkShell {
     gl-enable-firewall
     gl-disable-firewall
     gl-docker-logs
+    gl-docker-reup
   ];
 
   shellHook = ''
