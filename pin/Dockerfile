@@ -2,7 +2,7 @@ FROM nixos/nix
 
 RUN nix-channel --update
 
-RUN nix-shell -p bash jq curl xe --run exit
+RUN nix-shell -p bash jq curl xe dig --run exit
 
 ADD ./pin.sh /pin.sh
 RUN chmod a+x /pin.sh
