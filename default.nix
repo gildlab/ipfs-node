@@ -94,7 +94,7 @@ let
 
     gl-docker-run = pkgs.writeShellScriptBin "gl-docker-run" ''
       ${ensure-required-vars}
-      ${pkgs.docker-compose}/bin/docker-compose down
+      ${pkgs.docker-compose}/bin/docker-compose down --remove-orphans
 
       sudo rm -f ${path}/volumes/ipfs/data/ipfs/repo.lock ${path}/volumes/ipfs/data/ipfs/datastore/LOCK
 
@@ -110,8 +110,8 @@ let
     '';
 
     gl-docker-stop = pkgs.writeShellScriptBin "gl-docker-stop" ''
-      docker compose stop
-      docker compose rm
+      set -Eeuxo
+      docker compose rm -f -s
     '';
 
     gl-docker-reup = pkgs.writeShellScriptBin "gl-docker-reup" ''
