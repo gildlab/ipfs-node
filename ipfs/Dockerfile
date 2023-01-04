@@ -1,4 +1,4 @@
-FROM ipfs/kubo:v0.14
+FROM ipfs/go-ipfs:v0.13.1
 
 ADD ./container-init.d/001-set-profile.sh /container-init.d/001-set-profile.sh
 RUN chmod a+x /container-init.d/001-set-profile.sh
