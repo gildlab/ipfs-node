@@ -55,7 +55,7 @@ services:
     container_name: gl_ngrok_ipfs
     image: ngrok/ngrok
     restart: always
-    entrypoint: ngrok tunnel --label edge=${NGROK_EDGE} --log=stdout gl_ipfs:4001
+    entrypoint: ngrok tunnel --region=us --label edge=${NGROK_EDGE} --log=stdout gl_ipfs:4001
     env_file:
       - ${GILDLAB_IPFS_NODE_BASE_PATH}/.env
 
