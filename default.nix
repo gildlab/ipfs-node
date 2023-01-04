@@ -109,13 +109,8 @@ let
       ${pkgs.docker-compose}/bin/docker-compose logs
     '';
 
-    gl-docker-stop = pkgs.writeShellScriptBin "gl-docker-stop" ''
-      set -Eeuxo
-      docker compose rm -f -s
-    '';
-
     gl-docker-reup = pkgs.writeShellScriptBin "gl-docker-reup" ''
-    ${gl-docker-stop}/bin/gl-docker-stop
+    ${pkgs.docker-compose}/bin/docker-compose down
     ${gl-docker-run}/bin/gl-docker-run
     '';
 
@@ -143,7 +138,6 @@ pkgs.mkShell {
     pkgs.jq
     gl-docker-build
     gl-docker-run
-    gl-docker-stop
     gl-config-edit
     gl-enable-firewall
     gl-disable-firewall
