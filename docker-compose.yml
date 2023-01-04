@@ -26,18 +26,18 @@ services:
     depends_on:
       - ipfs
 
-  ngrok:
-    container_name: gl_ngrok
-    image: gildlab/ipfs-node:ngrok
-    restart: always
-    environment:
-      - NGROK_AUTH=${NGROK_AUTH}
-      - NGROK_PROTOCOL=http
-      - NGROK_PORT=nginx:80
-      - NGROK_REGION=${NGROK_REGION}
-      - NGROK_HOSTNAME=${NGROK_HOSTNAME}
-    depends_on:
-      - nginx
+  # ngrok:
+  #   container_name: gl_ngrok
+  #   image: gildlab/ipfs-node:ngrok
+  #   restart: always
+  #   environment:
+  #     - NGROK_AUTH=${NGROK_AUTH}
+  #     - NGROK_PROTOCOL=http
+  #     - NGROK_PORT=nginx:80
+  #     - NGROK_REGION=${NGROK_REGION}
+  #     - NGROK_HOSTNAME=${NGROK_HOSTNAME}
+  #   depends_on:
+  #     - nginx
 
   pin:
     container_name: gl_pin
@@ -50,3 +50,28 @@ services:
       test: ["CMD", "nix-shell", "/pin.sh"]
       interval: 30s
       timeout: 60m
+
+  ngrok_ipfs:
+    container_name: gl_ngrok_ipfs
+    image: ngrok/ngrok
+    restart: always
+    entrypoint: ngrok tunnel --label edge=${NGROK_EDGE} ipfs:4001
+    environment:
+      - NGROK_AUTHTOKEN=${NGROK_AUTH}
+    depends_on:
+      ipfs:
+        condition: service_healthy
+
+  # ngrok_api:
+  #   container_name: gl_ngrok_api
+  #   image: ngrok/ngrok
+  #   restart: always
+  #   entrypoint: ngrok --region="${NGROK_REGION}" --hostname=${NGROK_HOSTNAME} http ${NGROK_PORT}
+  #   environment:
+  #     - NGROK_AUTHTOKEN=${NGROK_AUTH}
+  #     - NGROK_REGION=${NGROK_REGION}
+  #     - NGROK_HOSTNAME=${NGROK_HOSTNAME}
+  #     - NGROK_PORT=nginx:80
+  #   depends_on:
+  #     - nginx
+  
