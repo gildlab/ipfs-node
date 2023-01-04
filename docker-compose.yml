@@ -18,41 +18,6 @@ services:
     env_file:
       - ${GILDLAB_IPFS_NODE_BASE_PATH}/.env
 
-  gl_nginx:
-    container_name: gl_nginx
-    image: gildlab/ipfs-node:nginx
-    restart: always
-    ports:
-      - "80"
-    depends_on:
-      gl_ipfs:
-        condition: service_healthy
-
-  # ngrok:
-  #   container_name: gl_ngrok
-  #   image: gildlab/ipfs-node:ngrok
-  #   restart: always
-  #   environment:
-  #     - NGROK_AUTH=${NGROK_AUTH}
-  #     - NGROK_PROTOCOL=http
-  #     - NGROK_PORT=nginx:80
-  #     - NGROK_REGION=${NGROK_REGION}
-  #     - NGROK_HOSTNAME=${NGROK_HOSTNAME}
-  #   depends_on:
-  #     - nginx
-
-  gl_pin:
-    container_name: gl_pin
-    image: gildlab/ipfs-node:pin
-    restart: always
-    depends_on:
-      gl_ipfs:
-        condition: service_healthy
-    healthcheck:
-      test: ["CMD", "nix-shell", "/pin.sh"]
-      interval: 30s
-      timeout: 60m
-
   gl_ngrok_ipfs:
     container_name: gl_ngrok_ipfs
     image: gildlab/ipfs-node:ngrok
@@ -65,16 +30,27 @@ services:
       gl_ipfs:
         condition: service_healthy
 
-  # ngrok_api:
-  #   container_name: gl_ngrok_api
-  #   image: ngrok/ngrok
-  #   restart: always
-  #   entrypoint: ngrok --region="${NGROK_REGION}" --hostname=${NGROK_HOSTNAME} http ${NGROK_PORT}
-  #   environment:
-  #     - NGROK_AUTHTOKEN=${NGROK_AUTH}
-  #     - NGROK_REGION=${NGROK_REGION}
-  #     - NGROK_HOSTNAME=${NGROK_HOSTNAME}
-  #     - NGROK_PORT=nginx:80
-  #   depends_on:
-  #     - nginx
+  gl_nginx:
+    container_name: gl_nginx
+    image: gildlab/ipfs-node:nginx
+    restart: always
+    ports:
+      - "80"
+    depends_on:
+      gl_ipfs:
+        condition: service_healthy
+
+  gl_pin:
+    container_name: gl_pin
+    image: gildlab/ipfs-node:pin
+    restart: always
+    depends_on:
+      gl_ipfs:
+        condition: service_healthy
+    healthcheck:
+      test: nix-shell /pin.sh false
+      interval: 30s
+      timeout: 60m
+
+
   
