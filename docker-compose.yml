@@ -1,7 +1,7 @@
 version: '3'
 
 services:
-  ipfs:
+  gl_ipfs:
     container_name: gl_ipfs
     image: gildlab/ipfs-node:ipfs
     restart: always
@@ -13,18 +13,18 @@ services:
     volumes:
       - ${GILDLAB_IPFS_NODE_BASE_PATH}/volumes/ipfs/data/ipfs:/data/ipfs
       - ${GILDLAB_IPFS_NODE_BASE_PATH}/volumes/ipfs/export:/export
-    environment:
-      - NGROK_HOSTNAME=${NGROK_HOSTNAME}
-      - NGROK_PORT=443
+    env_file:
+      - ${GILDLAB_IPFS_NODE_BASE_PATH}/.env
 
-  nginx:
+  gl_nginx:
     container_name: gl_nginx
     image: gildlab/ipfs-node:nginx
     restart: always
     ports:
       - "80"
     depends_on:
-      - ipfs
+      gl_ipfs:
+        condition: service_healthy
 
   # ngrok:
   #   container_name: gl_ngrok
@@ -39,27 +39,28 @@ services:
   #   depends_on:
   #     - nginx
 
-  pin:
+  gl_pin:
     container_name: gl_pin
     image: gildlab/ipfs-node:pin
     restart: always
     depends_on:
-      ipfs:
+      gl_ipfs:
         condition: service_healthy
     healthcheck:
       test: ["CMD", "nix-shell", "/pin.sh"]
       interval: 30s
       timeout: 60m
 
-  ngrok_ipfs:
+  gl_ngrok_ipfs:
     container_name: gl_ngrok_ipfs
     image: ngrok/ngrok
     restart: always
     entrypoint: ngrok tunnel --label edge=${NGROK_EDGE} ipfs:4001
-    environment:
-      - NGROK_AUTHTOKEN=${NGROK_AUTH}
+    env_file:
+      - ${GILDLAB_IPFS_NODE_BASE_PATH}/.env
+
     depends_on:
-      ipfs:
+      gl_ipfs:
         condition: service_healthy
 
   # ngrok_api:
