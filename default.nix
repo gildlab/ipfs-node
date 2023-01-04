@@ -28,7 +28,7 @@ let
       fi
     '';
 
-    required-vars = ["NGROK_AUTH" "NGROK_HOSTNAME" "NGROK_REGION"];
+    required-vars = ["NGROK_AUTHTOKEN" "NGROK_EDGE" "NGROK_EDGE_HOSTNAME" "NGROK_EDGE_PORT" "NGROK_HOSTNAME" "NGROK_REGION"];
 
     ensure-var = var-name: ''
       if [ -z "''${${var-name}}" ];

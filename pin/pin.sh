@@ -37,7 +37,7 @@ if command -v ipfs &> /dev/null
         echo "$hashes" | xe -j10x ipfs pin add {}
     else
         # detect if we're the docker host or guest to try to curl the machine that is running kubo
-        host=$( if [ -z $( dig +short ipfs ) ]; then echo "localhost"; else echo "ipfs"; fi )
+        host=$( if [ -z $( dig +short gl_ipfs ) ]; then echo "localhost"; else echo "gl_ipfs"; fi )
         url="http://$host:5001/api/v0/pin/add?arg="
         sed 's#^#'"$url"'#g' <<< "$hashes" | xe -j10x curl --fail -v -X POST
 fi
