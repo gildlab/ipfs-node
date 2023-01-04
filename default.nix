@@ -121,6 +121,10 @@ let
       ${source-env}
     '';
 
+    gl-fresh-ipfs = pkgs.writeShellScriptBin "gl-fresh-ipfs" ''
+    mv ''${GILDLAB_IPFS_NODE_BASE_PATH}/volumes/ipfs ''${GILDLAB_IPFS_NODE_BASE_PATH}/volumes/ipfs.bak.$(date +%s )
+    '';
+
 in
 pkgs.mkShell {
   # buildInputs is for dependencies you'd need "at run time",
@@ -143,6 +147,7 @@ pkgs.mkShell {
     gl-disable-firewall
     gl-docker-logs
     gl-docker-reup
+    gl-fresh-ipfs
   ];
 
   shellHook = ''

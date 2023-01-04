@@ -4,6 +4,7 @@ services:
   gl_ipfs:
     container_name: gl_ipfs
     image: gildlab/ipfs-node:ipfs
+    # image: ipfs/kubo:v0.17.0
     restart: always
     # https://docs.ipfs.tech/how-to/run-ipfs-inside-docker/#set-up
     ports:
