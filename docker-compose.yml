@@ -7,7 +7,10 @@ services:
     restart: always
     # no ports on the host
     # only other containers can access
+    # can't actually be empty or docker errors
+    # something useless intead
     ports:
+      - "127.0.0.1:4002:4002"
     volumes:
       - ${GILDLAB_IPFS_NODE_BASE_PATH}/volumes/ipfs/data/ipfs:/data/ipfs
       - ${GILDLAB_IPFS_NODE_BASE_PATH}/volumes/ipfs/export:/export
@@ -24,8 +27,6 @@ services:
     depends_on:
       gl_ipfs:
         condition: service_healthy
-    networks:
-      - ipfs
 
   # gl_nginx:
   #   container_name: gl_nginx
