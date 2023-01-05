@@ -9,10 +9,14 @@ let
     tarball-url = "https://github.com/gildlab/ipfs-node/archive/main.tar.gz";
     path = "$HOME/.config/gildlab/ipfs-node";
     ensure-home = ''
+      set -euxo pipefail
       export GILDLAB_IPFS_NODE_BASE_PATH=${path}
       mkdir -p ${path}
+
       mkdir -p ${path}/volumes/ipfs/data/ipfs
       mkdir -p ${path}/volumes/ipfs/export
+      sudo touch ${path}/volumes/ipfs/peerlist
+
       mkdir -p ${path}/volumes/nginx
       touch ${path}/.env
     '';
@@ -86,6 +90,10 @@ let
       ${source-env}
     '';
 
+    gl-peerlist-edit = pkgs.writeShellScriptBin "gl-peerlist-edit" ''
+      sudo ${pkgs.nano}/bin/nano ${path}/volumes/ipfs/peerlist
+    '';
+
     gl-fresh-ipfs = pkgs.writeShellScriptBin "gl-fresh-ipfs" ''
     set -euxo pipefail
     mv ''${GILDLAB_IPFS_NODE_BASE_PATH}/volumes/ipfs ''${GILDLAB_IPFS_NODE_BASE_PATH}/volumes/ipfs.bak.$(date +%s )
@@ -110,6 +118,7 @@ pkgs.mkShell {
     gl-config-edit
     gl-docker-logs
     gl-fresh-ipfs
+    gl-peerlist-edit
   ];
 
   shellHook = ''
