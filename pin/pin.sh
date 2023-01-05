@@ -33,15 +33,18 @@ PAYLOAD
     curl -X POST -d "$body" $url | jq -r "$jq_selector"
 }
 
+pin_add_url() {
+    ipfs_url "pin/add"
+}
+
 # pin using kubo directly
 pin_direct() {
-    echo "$0" | xe -j10x ipfs pin add
+    echo "$1" | xe -j10x ipfs pin add
 }
 
 # pin using a service
 pin_service() {
-    local url="http://$( ipfs_service_host ):5001/api/v0/pin/add?arg=";
-    sed 's#^#'"$url"'#g' <<< "$1" | xe -j10x curl -s -X POST
+    sed 's#^#'"$( pin_add_url )"'#g' <<< "$1" | xe -j10x curl -s -X POST
 }
 
 pin_add() {

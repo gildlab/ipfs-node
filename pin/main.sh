@@ -1,5 +1,5 @@
 #!/usr/bin/env nix-shell
-#! nix-shell -i bash
+#! nix-shell -i bash -p jq curl xe dig
 
 set -Eeux
 

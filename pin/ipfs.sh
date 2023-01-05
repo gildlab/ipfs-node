@@ -17,3 +17,7 @@ ipfs_service_host() {
 is_ipfs_running() {
     ipfs id &>/dev/null
 }
+
+ipfs_url() {
+    echo "http://$( ipfs_service_host ):5001/api/v0/$1?arg=";
+}
