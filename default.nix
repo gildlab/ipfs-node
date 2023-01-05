@@ -52,24 +52,6 @@ let
         tar --strip-components=1 -zxvf main.tar.gz
     '';
 
-    gl-docker-build = pkgs.writeShellScriptBin "gl-docker-build" ''
-    (
-        repo=gildlab/ipfs-node
-
-        ${pkgs.docker}/bin/docker build -t ''${repo}:ipfs ./ipfs
-        ${pkgs.docker}/bin/docker push ''${repo}:ipfs
-
-        ${pkgs.docker}/bin/docker build -t ''${repo}:nginx ./nginx
-        ${pkgs.docker}/bin/docker push ''${repo}:nginx
-
-        ${pkgs.docker}/bin/docker build -t ''${repo}:ngrok ./ngrok
-        ${pkgs.docker}/bin/docker push ''${repo}:ngrok
-
-        ${pkgs.docker}/bin/docker build -t ''${repo}:pin ./pin
-        ${pkgs.docker}/bin/docker push ''${repo}:pin
-    )
-    '';
-
     cp-firewall-apps = ''
       sudo cp ufw/gildlab /etc/ufw/applications.d/gildlab
     '';
@@ -92,8 +74,9 @@ let
       ${source-env}
     '';
 
-    gl-docker-run = pkgs.writeShellScriptBin "gl-docker-run" ''
+    gl-docker-start = pkgs.writeShellScriptBin "gl-docker-start" ''
       ${ensure-required-vars}
+      ${temp-main}
       ${pkgs.docker-compose}/bin/docker-compose down --remove-orphans
 
       sudo rm -f ${path}/volumes/ipfs/data/ipfs/repo.lock ${path}/volumes/ipfs/data/ipfs/datastore/LOCK
@@ -107,11 +90,6 @@ let
     gl-docker-logs = pkgs.writeShellScriptBin "gl-docker-logs" ''
       ${temp-main}
       ${pkgs.docker-compose}/bin/docker-compose logs
-    '';
-
-    gl-docker-reup = pkgs.writeShellScriptBin "gl-docker-reup" ''
-    ${pkgs.docker-compose}/bin/docker-compose down
-    ${gl-docker-run}/bin/gl-docker-run
     '';
 
     gl-config-edit = pkgs.writeShellScriptBin "gl-config-edit" ''
@@ -140,13 +118,11 @@ pkgs.mkShell {
     pkgs.ix
     pkgs.curl
     pkgs.jq
-    gl-docker-build
-    gl-docker-run
+    gl-docker-start
     gl-config-edit
     gl-enable-firewall
     gl-disable-firewall
     gl-docker-logs
-    gl-docker-reup
     gl-fresh-ipfs
   ];
 
