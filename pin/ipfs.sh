@@ -12,3 +12,8 @@ ipfs_service_host() {
             echo "${IPFS_HOST}"
     fi
 }
+
+# determine if kubo is available direct
+is_ipfs_running() {
+    ipfs id &>/dev/null
+}

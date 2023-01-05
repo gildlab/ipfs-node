@@ -33,11 +33,6 @@ PAYLOAD
     curl -X POST -d "$body" $url | jq -r "$jq_selector"
 }
 
-# determine if kubo is available direct
-is_ipfs_running() {
-    ipfs id &>/dev/null
-}
-
 # pin using kubo directly
 pin_direct() {
     echo "$0" | xe -j10x ipfs pin add
