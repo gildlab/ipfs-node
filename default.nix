@@ -46,10 +46,13 @@ let
     '';
 
     temp-main = ''
-        dir=$(mktemp -d)
-        cd $dir
-        wget ${tarball-url}
-        tar --strip-components=1 -zxvf main.tar.gz
+      if [ ! -f ./IPFS_NODE ];
+        then
+          dir=$(mktemp -d);
+          cd $dir;
+          wget ${tarball-url};
+          tar --strip-components=1 -zxvf main.tar.gz;
+      fi
     '';
 
     cp-firewall-apps = ''
