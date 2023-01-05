@@ -88,6 +88,7 @@ let
       ${pkgs.docker}/bin/docker network prune -f
 
       ${pkgs.docker-compose}/bin/docker-compose pull
+      gl-fresh-ipfs
       ${pkgs.docker-compose}/bin/docker-compose up -d
     '';
 
