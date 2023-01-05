@@ -78,26 +78,38 @@ $ docker login
 
 ### Enter the nix shell for this repository
 
-Once you have nix shell and docker installed you can enter the nix shell with all the commands in this repository.
+Once you have nix and docker installed you can run nix shell commands straight from github.
 
 ```
-$ nix-shell https://github.com/gildlab/ipfs-node/archive/main.tar.gz?`date -Iseconds`
+nix-shell https://abc.gildlab.xyz?$RANDOM --run <command>
 ```
 
-The shell requires that some environment variables are set.
+Where `<command>` is whatever command you want to run.
 
-Ngrok auth token can be found: https://dashboard.ngrok.com/get-started/your-authtoken
+#### Setup config
 
-Ngrok domains can be setup: https://dashboard.ngrok.com/cloud-edge/domains
+Run `gl-config-edit` in nix shell to setup config for your environment.
+The required configuration will be prompted if not set and then you can edit them all in the editor.
 
-These values can be changed later by modifying
+#### Setup peerlist
 
-#### Available commands
+Run `gl-peerlist-edit` in nix shell to setup the peerlist.
+Each peer is simply a newline.
 
-Inside the nix shell the following commands are available.
+For ngrok peers each line will look like:
 
-`nix-shell --run gl-docker-build`: Builds and tags all docker files.
+```
+/dns/1.tcp.ngrok.io/tcp/<port>/p2p/<ipfs id>
+```
 
-`nix-shell --run gl-docker-run`: Uses docker compose to bring all dockers up.
+Where your `port` can be found on the ngrok dashboard and your own `ipfs id` can be found by running `docker exec gl_ipfs ipfs id`.
 
-`nix-shell --run gl-config-edit`: Opens the .env file in nano text editor.
+Each peer on the same setup can run the same commands to tell you their ipfs id and ngrok tcp port.
+
+You can also share peerlists in telegram, etc.
+
+#### (Re)start the docker
+
+Run `gl-docker-start` in nix shell to (re)boot all the boxes.
+
+This needs to be run whenever config/peerlist/etc. changes so that the changes take effect.
