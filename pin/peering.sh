@@ -1,5 +1,5 @@
 #!/usr/bin/env nix-shell
-#! nix-shell -i bash -p jq curl xe dig
+#! nix-shell -i bash -p jq curl xe dig sed
 
 set -Eeux
 
@@ -9,8 +9,14 @@ get_peers() {
     cat peerlist
 }
 
-peering_add_url() {
-    ipfs_url "swarm/peering/add"
+# extracts only the ids from the peerlist
+get_peer_ids() {
+    get_peers | grep '[^\/]*$' -o
+}
+
+get_p2p_circuit() {
+    # ipfs_curl_all "id" "$( get_peer_ids )"
+    curl -s -X POST $( ipfs_url "swarm/peers" )
 }
 
 peering_add_direct() {
@@ -18,18 +24,14 @@ peering_add_direct() {
 }
 
 peering_add_service() {
-    sed 's#^#'"$( peering_add_url )"'#g' <<< "$1" | xe -j10x curl -s -X POST
+    ipfs_curl_all "swarm/peering/add" "$1"
 }
 
 peering_add() {
-    if is_ipfs_running
-        then
-            peering_add_direct "$1"
-        else
-            peering_add_service "$1"
-    fi
+    ipfs_dispatch peering_add_direct peering_add_service "$1"
 }
 
 main_peering() {
     peering_add "$( get_peers )"
+    # get_p2p_circuit
 }

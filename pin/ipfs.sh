@@ -21,3 +21,17 @@ is_ipfs_running() {
 ipfs_url() {
     echo "http://$( ipfs_service_host ):5001/api/v0/$1?arg=";
 }
+
+ipfs_curl_all() {
+    local url_prefix=$( ipfs_url "$1" )
+    sed 's#^#'"$url_prefix"'#g' <<< "$2" | xe -j10x curl -s -X POST
+}
+
+ipfs_dispatch() {
+    if is_ipfs_running
+        then
+            $1 "$3"
+        else
+            $2 "$3"
+    fi
+}

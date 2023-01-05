@@ -1,5 +1,5 @@
 #!/usr/bin/env nix-shell
-#! nix-shell -i bash -p jq curl xe dig
+#! nix-shell -i bash -p jq curl xe dig sed
 
 set -Eeux
 
@@ -33,10 +33,6 @@ PAYLOAD
     curl -X POST -d "$body" $url | jq -r "$jq_selector"
 }
 
-pin_add_url() {
-    ipfs_url "pin/add"
-}
-
 # pin using kubo directly
 pin_direct() {
     echo "$1" | xe -j10x ipfs pin add
@@ -44,16 +40,11 @@ pin_direct() {
 
 # pin using a service
 pin_service() {
-    sed 's#^#'"$( pin_add_url )"'#g' <<< "$1" | xe -j10x curl -s -X POST
+    ipfs_curl_all "pin/add" "$1"
 }
 
 pin_add() {
-    if is_ipfs_running
-        then 
-            pin_direct "$1"
-        else 
-            pin_service "$1"
-    fi
+    ipfs_dispatch pin_direct pin_service "$1"
 }
 
 # pin the hashes to the ipfs node
