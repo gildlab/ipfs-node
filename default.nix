@@ -55,23 +55,6 @@ let
       fi
     '';
 
-    cp-firewall-apps = ''
-      sudo cp ufw/gildlab /etc/ufw/applications.d/gildlab
-    '';
-
-    gl-enable-firewall = pkgs.writeShellScriptBin "gl-enable-firewall" ''
-      ${cp-firewall-apps}
-      sudo ufw enable
-      sudo ufw allow "gildlab-ipfs"
-      sudo ufw allow "gildlab-nginx"
-    '';
-
-    gl-disable-firewall = pkgs.writeShellScriptBin "gl-disable-firewall" ''
-      ${cp-firewall-apps}
-      sudo ufw delete allow "gildlab-ipfs"
-      sudo ufw delete allow "gildlab-nginx"
-    '';
-
     ensure-required-vars = ''
       ${builtins.concatStringsSep "" (map ensure-var required-vars)}
       ${source-env}
@@ -88,7 +71,6 @@ let
       ${pkgs.docker}/bin/docker network prune -f
 
       ${pkgs.docker-compose}/bin/docker-compose pull
-      gl-fresh-ipfs
       ${pkgs.docker-compose}/bin/docker-compose up -d
     '';
 
@@ -126,8 +108,6 @@ pkgs.mkShell {
     pkgs.jq
     gl-docker-start
     gl-config-edit
-    gl-enable-firewall
-    gl-disable-firewall
     gl-docker-logs
     gl-fresh-ipfs
   ];
