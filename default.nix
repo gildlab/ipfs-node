@@ -78,6 +78,7 @@ let
     '';
 
     gl-docker-start = pkgs.writeShellScriptBin "gl-docker-start" ''
+      set -euxo pipefail
       ${ensure-required-vars}
       ${temp-main}
       ${pkgs.docker-compose}/bin/docker-compose down --remove-orphans

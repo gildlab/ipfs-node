@@ -1,5 +1,7 @@
 FROM ipfs/kubo:v0.17.0
 
+RUN export IPFS_LOGGING=DEBUG
+
 # ADD ./container-init.d/001-set-profile.sh /container-init.d/001-set-profile.sh
 # RUN chmod a+x /container-init.d/001-set-profile.sh
 
