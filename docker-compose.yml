@@ -46,7 +46,7 @@ services:
       gl_ipfs:
         condition: service_healthy
     healthcheck:
-      test: nix-shell /pin.sh false
+      test: nix-shell /main.sh false
       interval: 30s
       timeout: 60m
     environment:
