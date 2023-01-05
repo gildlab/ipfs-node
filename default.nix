@@ -9,7 +9,7 @@ let
     tarball-url = "https://github.com/gildlab/ipfs-node/archive/main.tar.gz";
     path = "$HOME/.config/gildlab/ipfs-node";
     ensure-home = ''
-      set -euxo pipefail
+      set -eux
       export GILDLAB_IPFS_NODE_BASE_PATH=${path}
       mkdir -p ${path}
 
@@ -65,7 +65,7 @@ let
     '';
 
     gl-docker-start = pkgs.writeShellScriptBin "gl-docker-start" ''
-      set -euxo pipefail
+      set -eux
       ${ensure-required-vars}
       ${temp-main}
       ${pkgs.docker-compose}/bin/docker-compose down --remove-orphans
@@ -95,7 +95,7 @@ let
     '';
 
     gl-fresh-ipfs = pkgs.writeShellScriptBin "gl-fresh-ipfs" ''
-    set -euxo pipefail
+    set -eux
     mv ''${GILDLAB_IPFS_NODE_BASE_PATH}/volumes/ipfs ''${GILDLAB_IPFS_NODE_BASE_PATH}/volumes/ipfs.bak.$(date +%s )
     '';
 
