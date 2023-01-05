@@ -3,6 +3,8 @@
 
 set -Eeux
 
+. ipfs.sh
+
 # get the hashes from the subgraph
 get_hashes () {
     local url='https://api.thegraph.com/subgraphs/name/gild-lab/offchainassetvault'
@@ -41,29 +43,22 @@ pin_direct() {
     echo "$0" | xe -j10x ipfs pin add
 }
 
-# detect the host of the service
-service_host() {
-    if [ -z $( dig +short "${IPFS_HOST}" ) ]
-        then
-            echo "localhost"
-        else
-            echo "${IPFS_HOST}"
-    fi
-}
-
 # pin using a service
 pin_service() {
-    local url="http://$( service_host ):5001/api/v0/pin/add?arg=";
+    local url="http://$( ipfs_service_host ):5001/api/v0/pin/add?arg=";
     sed 's#^#'"$url"'#g' <<< "$1" | xe -j10x curl -s -X POST
+}
+
+pin_add() {
+    if is_ipfs_running
+        then 
+            pin_direct "$1"
+        else 
+            pin_service "$1"
+    fi
 }
 
 # pin the hashes to the ipfs node
 main_pin() {
-    local hashes="$( get_hashes )"
-    if is_ipfs_running
-        then 
-            pin_direct "$hashes"
-        else 
-            pin_service "$hashes"
-    fi
+    pin_add "$( get_hashes )"
 }
