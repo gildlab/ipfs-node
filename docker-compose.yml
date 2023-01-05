@@ -1,35 +1,24 @@
 version: '3.9'
 
-networks:
-  ipfs:
-
 services:
   gl_ipfs:
     container_name: gl_ipfs
-    # image: gildlab/ipfs-node:ipfs
-    image: ipfs/kubo:v0.17.0
+    image: gildlab/ipfs-node:ipfs
     restart: always
-    # https://docs.ipfs.tech/how-to/run-ipfs-inside-docker/#set-up
-    # ports:
-      # - "127.0.0.1:5001:5001"
-      # - "127.0.0.1:8080:8080"
-      # - "4001:4001"
-      # - "4001:4001/udp"
+    # no ports on the host
+    # only other containers can access
+    ports:
     volumes:
       - ${GILDLAB_IPFS_NODE_BASE_PATH}/volumes/ipfs/data/ipfs:/data/ipfs
       - ${GILDLAB_IPFS_NODE_BASE_PATH}/volumes/ipfs/export:/export
     env_file:
       - ${GILDLAB_IPFS_NODE_BASE_PATH}/.env
-    environment:
-      - IPFS_LOGGING=info
-    networks:
-      - ipfs
 
   gl_ngrok_ipfs:
     container_name: gl_ngrok_ipfs
     image: gildlab/ipfs-node:ngrok
     restart: always
-    entrypoint: ngrok tunnel --region=us --label edge=${NGROK_EDGE} --log=stdout gl_ipfs.ipfs-node_ipfs:4001
+    entrypoint: ngrok tunnel --region=us --label edge=${NGROK_EDGE} --log=stdout gl_ipfs:4001
     env_file:
       - ${GILDLAB_IPFS_NODE_BASE_PATH}/.env
     depends_on:
@@ -37,15 +26,6 @@ services:
         condition: service_healthy
     networks:
       - ipfs
-
-  # gl_ubuntu:
-  #   image: ubuntu
-  #   container_name: gl_ubuntu
-  #   depends_on:
-  #     gl_ipfs:
-  #       condition: service_healthy
-  #   networks:
-  #     - ipfs
 
   # gl_nginx:
   #   container_name: gl_nginx
@@ -57,17 +37,19 @@ services:
   #     gl_ipfs:
   #       condition: service_healthy
 
-  # gl_pin:
-  #   container_name: gl_pin
-  #   image: gildlab/ipfs-node:pin
-  #   restart: always
-  #   depends_on:
-  #     gl_ipfs:
-  #       condition: service_healthy
-  #   healthcheck:
-  #     test: nix-shell /pin.sh false
-  #     interval: 30s
-  #     timeout: 60m
+  gl_pin:
+    container_name: gl_pin
+    image: gildlab/ipfs-node:pin
+    restart: always
+    depends_on:
+      gl_ipfs:
+        condition: service_healthy
+    healthcheck:
+      test: nix-shell /pin.sh false
+      interval: 30s
+      timeout: 60m
+    environment:
+      - IPFS_HOST=gl_ipfs
 
 
   

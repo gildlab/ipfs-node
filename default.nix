@@ -105,6 +105,7 @@ let
     '';
 
     gl-fresh-ipfs = pkgs.writeShellScriptBin "gl-fresh-ipfs" ''
+    set -euxo pipefail
     mv ''${GILDLAB_IPFS_NODE_BASE_PATH}/volumes/ipfs ''${GILDLAB_IPFS_NODE_BASE_PATH}/volumes/ipfs.bak.$(date +%s )
     '';
 

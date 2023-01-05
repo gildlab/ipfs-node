@@ -43,11 +43,11 @@ pin_direct() {
 
 # detect the host of the service
 service_host() {
-    if [ -z $( dig +short gl_ipfs ) ]
+    if [ -z $( dig +short "${IPFS_HOST}" ) ]
         then
             echo "localhost"
         else
-            echo "gl_ipfs"
+            echo "${IPFS_HOST}"
     fi
 }
 
