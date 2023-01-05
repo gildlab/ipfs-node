@@ -3,15 +3,15 @@ version: '3'
 services:
   gl_ipfs:
     container_name: gl_ipfs
-    image: gildlab/ipfs-node:ipfs
-    # image: ipfs/kubo:v0.17.0
+    # image: gildlab/ipfs-node:ipfs
+    image: ipfs/kubo:v0.17.0
     restart: always
     # https://docs.ipfs.tech/how-to/run-ipfs-inside-docker/#set-up
     ports:
       - "127.0.0.1:5001:5001"
       - "127.0.0.1:8080:8080"
       - "4001:4001"
-      - "4001:4001/udp"
+      # - "4001:4001/udp"
     volumes:
       - ${GILDLAB_IPFS_NODE_BASE_PATH}/volumes/ipfs/data/ipfs:/data/ipfs
       - ${GILDLAB_IPFS_NODE_BASE_PATH}/volumes/ipfs/export:/export
