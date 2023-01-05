@@ -94,6 +94,10 @@ let
       sudo ${pkgs.nano}/bin/nano ${path}/volumes/pin/peerlist
     '';
 
+    gl-peerlist-show = pkgs.writeShellScriptBin "gl-peerlist-show" ''
+      sudo cat ${path}/volumes/pin/peerlist
+    '';
+
     gl-fresh-ipfs = pkgs.writeShellScriptBin "gl-fresh-ipfs" ''
     set -ux
     mv ''${GILDLAB_IPFS_NODE_BASE_PATH}/volumes/ipfs ''${GILDLAB_IPFS_NODE_BASE_PATH}/volumes/ipfs.bak.$(date +%s )
@@ -119,6 +123,7 @@ pkgs.mkShell {
     gl-docker-logs
     gl-fresh-ipfs
     gl-peerlist-edit
+    gl-peerlist-show
   ];
 
   shellHook = ''
