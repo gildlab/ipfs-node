@@ -15,7 +15,7 @@ let
 
       mkdir -p ${path}/volumes/ipfs/data/ipfs
       mkdir -p ${path}/volumes/ipfs/export
-      sudo touch ${path}/volumes/ipfs/peerlist
+      sudo touch ${path}/volumes/pin/peerlist
 
       mkdir -p ${path}/volumes/nginx
       touch ${path}/.env
@@ -91,7 +91,7 @@ let
     '';
 
     gl-peerlist-edit = pkgs.writeShellScriptBin "gl-peerlist-edit" ''
-      sudo ${pkgs.nano}/bin/nano ${path}/volumes/ipfs/peerlist
+      sudo ${pkgs.nano}/bin/nano ${path}/volumes/pin/peerlist
     '';
 
     gl-fresh-ipfs = pkgs.writeShellScriptBin "gl-fresh-ipfs" ''

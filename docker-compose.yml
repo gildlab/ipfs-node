@@ -14,7 +14,6 @@ services:
     volumes:
       - ${GILDLAB_IPFS_NODE_BASE_PATH}/volumes/ipfs/data/ipfs:/data/ipfs
       - ${GILDLAB_IPFS_NODE_BASE_PATH}/volumes/ipfs/export:/export
-      - ${GILDLAB_IPFS_NODE_BASE_PATH}/volumes/ipfs/peerlist:/peerlist
     env_file:
       - ${GILDLAB_IPFS_NODE_BASE_PATH}/.env
 
@@ -52,6 +51,8 @@ services:
       timeout: 60m
     environment:
       - IPFS_HOST=gl_ipfs
+    volumes:
+      - ${GILDLAB_IPFS_NODE_BASE_PATH}/volumes/pin/peerlist:/peerlist
 
 
   
