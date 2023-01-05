@@ -4,7 +4,7 @@ RUN nix-channel --update
 
 RUN nix-shell -p bash jq curl xe dig --run exit
 
-ADD ./pin.sh /pin.sh
-RUN chmod a+x /pin.sh
+ADD . .
+RUN chmod a+x /main.sh
 
-CMD nix-shell /pin.sh true
+CMD nix-shell /main.sh true

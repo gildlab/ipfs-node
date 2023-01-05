@@ -1,7 +1,7 @@
 #!/usr/bin/env nix-shell
-#! nix-shell -i bash -p bash jq curl xe dig
+#! nix-shell -i bash -p jq curl xe dig
 
-set -Eeuxo pipefail
+set -Eeux
 
 # get the hashes from the subgraph
 get_hashes () {
@@ -58,7 +58,7 @@ pin_service() {
 }
 
 # pin the hashes to the ipfs node
-pin_hashes() {
+main_pin() {
     local hashes="$( get_hashes )"
     if is_ipfs_running
         then 
@@ -67,17 +67,3 @@ pin_hashes() {
             pin_service "$hashes"
     fi
 }
-
-# main loop
-loop() {
-    while true
-        do
-            pin_hashes
-            sleep 10
-        done
-}
-
-if $1
-    then loop
-    else pin_hashes
-fi
