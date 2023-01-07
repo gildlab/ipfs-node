@@ -62,10 +62,6 @@ let
       fi
     '';
 
-    gl-fresh-local = pkgs.writeShellScript "gl-fresh-local" ''
-      ${temp-main}
-    '';
-
     ensure-required-vars = ''
       ${builtins.concatStringsSep "" (map ensure-var required-vars)}
       ${source-env}
@@ -144,11 +140,11 @@ pkgs.mkShell {
     gl-peerlist-edit
     gl-peerlist-show
     gl-docker-compose
-    gl-fresh-local
     gl-docker-health
   ];
 
   shellHook = ''
+    ${temp-main}
     ${ensure-home}
     ${source-env}
   '';
