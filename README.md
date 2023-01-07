@@ -70,12 +70,6 @@ $ sudo usermod -aG docker $USER
 
 You may need to restart the machine for these changes to take effect.
 
-To push docker boxes that you build you will need to log into docker hub.
-
-```
-$ docker login
-```
-
 ### Enter the nix shell for this repository
 
 Once you have nix and docker installed you can run nix shell commands straight from github.
