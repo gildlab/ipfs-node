@@ -15,6 +15,7 @@ let
 
       mkdir -p ${path}/volumes/ipfs/data/ipfs
       mkdir -p ${path}/volumes/ipfs/export
+      mkdir -p ${path}/volumes/pin
       sudo touch ${path}/volumes/pin/peerlist
 
       mkdir -p ${path}/volumes/nginx
@@ -60,6 +61,10 @@ let
           wget ${tarball-url};
           tar --strip-components=1 -zxvf main.tar.gz;
       fi
+    '';
+
+    gl-fresh-local = pkgs.writeShellScript "gl-fresh-local" ''
+      ${temp-main}
     '';
 
     ensure-required-vars = ''
@@ -136,6 +141,7 @@ pkgs.mkShell {
     gl-peerlist-edit
     gl-peerlist-show
     gl-docker-compose
+    gl-fresh-local
   ];
 
   shellHook = ''
