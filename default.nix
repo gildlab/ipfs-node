@@ -9,7 +9,7 @@ let
     tarball-url = "https://github.com/gildlab/ipfs-node/archive/main.tar.gz";
     path = "$HOME/.config/gildlab/ipfs-node";
     ensure-home = ''
-      set -ux
+      set -u
       export GILDLAB_IPFS_NODE_BASE_PATH=${path}
       mkdir -p ${path}
 
@@ -30,7 +30,6 @@ let
           set -o allexport
           source ${path}/.env
           set +o allexport
-          set -x
         else
           touch ${path}/.env
       fi
@@ -73,7 +72,7 @@ let
     '';
 
     gl-docker-start = pkgs.writeShellScriptBin "gl-docker-start" ''
-      set -ux
+      set -u
       ${ensure-required-vars}
       ${temp-main}
       ${pkgs.docker-compose}/bin/docker-compose down --remove-orphans
@@ -87,7 +86,7 @@ let
     '';
 
     gl-docker-compose = pkgs.writeShellScriptBin "gl-docker-compose" ''
-      set -ux
+      set -u
       ${ensure-required-vars}
       ${temp-main}
       ${pkgs.docker-compose}/bin/docker-compose "$@"
@@ -115,8 +114,12 @@ let
     '';
 
     gl-fresh-ipfs = pkgs.writeShellScriptBin "gl-fresh-ipfs" ''
-    set -ux
+    set -u
     mv ''${GILDLAB_IPFS_NODE_BASE_PATH}/volumes/ipfs ''${GILDLAB_IPFS_NODE_BASE_PATH}/volumes/ipfs.bak.$(date +%s )
+    '';
+
+    gl-docker-health = pkgs.writeShellScriptBin "gl-docker-health" ''
+      docker inspect --format "{{json .State.Health }}" "$@" | jq
     '';
 
 in
@@ -142,6 +145,7 @@ pkgs.mkShell {
     gl-peerlist-show
     gl-docker-compose
     gl-fresh-local
+    gl-docker-health
   ];
 
   shellHook = ''
