@@ -5,38 +5,24 @@ services:
     container_name: gl_ipfs
     image: gildlab/ipfs-node:ipfs
     restart: always
-    # no ports on the host
-    # only other containers can access
-    # can't actually be empty or docker errors
-    # something useless intead
+    # dont expose anything in particular use ngrok for that
     ports:
-      - "127.0.0.1:4002:4002"
+      - "127.0.0.1::4001"
     volumes:
       - ${GILDLAB_IPFS_NODE_BASE_PATH}/volumes/ipfs/data/ipfs:/data/ipfs
       - ${GILDLAB_IPFS_NODE_BASE_PATH}/volumes/ipfs/export:/export
     env_file:
       - ${GILDLAB_IPFS_NODE_BASE_PATH}/.env
 
-  gl_ngrok_ipfs:
-    container_name: gl_ngrok_ipfs
-    image: gildlab/ipfs-node:ngrok
+  gl_nginx:
+    container_name: gl_nginx
+    image: gildlab/ipfs-node:nginx
     restart: always
-    entrypoint: ngrok tunnel --region=us --label edge=${NGROK_EDGE} --log=stdout gl_ipfs:4001
-    env_file:
-      - ${GILDLAB_IPFS_NODE_BASE_PATH}/.env
+    ports:
+      - "127.0.0.1::80"
     depends_on:
       gl_ipfs:
         condition: service_healthy
-
-  # gl_nginx:
-  #   container_name: gl_nginx
-  #   image: gildlab/ipfs-node:nginx
-  #   restart: always
-  #   ports:
-  #     - "80"
-  #   depends_on:
-  #     gl_ipfs:
-  #       condition: service_healthy
 
   gl_pin:
     container_name: gl_pin
@@ -54,5 +40,23 @@ services:
     volumes:
       - ${GILDLAB_IPFS_NODE_BASE_PATH}/volumes/pin/peerlist:/peerlist
 
+  gl_ngrok_ipfs:
+    container_name: gl_ngrok_ipfs
+    image: gildlab/ipfs-node:ngrok
+    restart: always
+    entrypoint: ngrok tunnel --region=us --label edge=${NGROK_EDGE} --log=stdout gl_ipfs:4001
+    env_file:
+      - ${GILDLAB_IPFS_NODE_BASE_PATH}/.env
+    depends_on:
+      gl_ipfs:
+        condition: service_healthy
 
-  
+  gl_ngrok_nginx:
+    container_name: gl_ngrok_nginx
+    image: gildlab/ipfs-node:ngrok
+    restart: always
+    entrypoint: ngrok http --region=${NGROK_REGION} --hostname ${NGROK_HOSTNAME} --log=stdout gl_nginx:80
+    env_file:
+      - ${GILDLAB_IPFS_NODE_BASE_PATH}/.env
+    depends_on:
+      - gl_nginx

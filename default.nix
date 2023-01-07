@@ -67,11 +67,18 @@ let
       ${source-env}
     '';
 
+    container-names = ["gl_ipfs" "gl_nginx" "gl_pin" "gl_ngrok_ipfs" "gl_ngrok_nginx"];
+    down-container = container: ''
+      ${pkgs.docker}/bin/docker stop ${container}
+      ${pkgs.docker}/bin/docker rm ${container}
+    '';
+    down-containers = builtins.concatStringsSep "" (map down-container container-names);
+
     gl-docker-start = pkgs.writeShellScriptBin "gl-docker-start" ''
       set -u
       ${ensure-required-vars}
       ${temp-main}
-      ${pkgs.docker-compose}/bin/docker-compose down --remove-orphans
+      ${down-containers}
 
       sudo rm -f ${path}/volumes/ipfs/data/ipfs/repo.lock ${path}/volumes/ipfs/data/ipfs/datastore/LOCK
 
