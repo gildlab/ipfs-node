@@ -91,6 +91,7 @@ let
     '';
 
     gl-peerlist-edit = pkgs.writeShellScriptBin "gl-peerlist-edit" ''
+      mkdir -p ${path}/volumes/pin
       sudo ${pkgs.nano}/bin/nano ${path}/volumes/pin/peerlist
     '';
 
