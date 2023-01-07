@@ -78,6 +78,13 @@ let
       ${pkgs.docker-compose}/bin/docker-compose up -d
     '';
 
+    gl-docker-compose = pkgs.writeShellScriptBin "gl-docker-compose" ''
+      set -ux
+      ${ensure-required-vars}
+      ${temp-main}
+      ${pkgs.docker-compose}/bin/docker-compose "$@"
+    '';
+
     gl-docker-logs = pkgs.writeShellScriptBin "gl-docker-logs" ''
       ${temp-main}
       ${pkgs.docker-compose}/bin/docker-compose logs
@@ -125,6 +132,7 @@ pkgs.mkShell {
     gl-fresh-ipfs
     gl-peerlist-edit
     gl-peerlist-show
+    gl-docker-compose
   ];
 
   shellHook = ''
