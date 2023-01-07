@@ -21,6 +21,7 @@ let
       touch ${path}/.env
     '';
 
+    # The +x is to avoid dumping environment vars to logs
     source-env = ''
       if [[ -f "${path}/.env" ]]
         then
