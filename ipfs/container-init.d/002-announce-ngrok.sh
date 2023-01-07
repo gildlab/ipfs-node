@@ -1,4 +1,4 @@
 #!/bin/sh
 set -euxo pipefail
 
-ipfs config --json Addresses.AppendAnnounce '["/dns/'"$NGROK_EDGE_HOSTNAME"'/tcp/'"$NGROK_EDGE_PORT"'"]'
+ipfs config --json Addresses.AppendAnnounce '["/dns/'"$GILDLAB_IPFS_NODE_TCP_HOSTNAME"'/tcp/'"$GILDLAB_IPFS_NODE_TCP_PORT"'"]'
