@@ -116,6 +116,14 @@ let
       sudo cat ${path}/volumes/pin/peerlist
     '';
 
+    gl-peerlist-export = pkgs.writeShellScriptBin "gl-peerlist-export" ''
+      sudo cat ${path}/volumes/pin/peerlist | ix
+    '';
+
+    gl-peerlist-import = pkgs.writeShellScriptBin "gl-peerlist-import" ''
+      sudo curl "$@" -o ${path}/volumes/pin/peerlist
+    '';
+
     gl-fresh-ipfs = pkgs.writeShellScriptBin "gl-fresh-ipfs" ''
     set -u
     mv ''${GILDLAB_IPFS_NODE_BASE_PATH}/volumes/ipfs ''${GILDLAB_IPFS_NODE_BASE_PATH}/volumes/ipfs.bak.$(date +%s )
@@ -146,6 +154,8 @@ pkgs.mkShell {
     gl-fresh-ipfs
     gl-peerlist-edit
     gl-peerlist-show
+    gl-peerlist-import
+    gl-peerlist-export
     gl-docker-compose
     gl-docker-health
   ];

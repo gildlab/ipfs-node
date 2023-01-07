@@ -44,7 +44,7 @@ services:
     container_name: gl_ngrok_ipfs
     image: gildlab/ipfs-node:ngrok
     restart: always
-    entrypoint: ngrok tunnel --region=${NGROK_REGION} --remote-addr "${GILDLAB_IPFS_NODE_TCP_HOSTNAME}:${GILDLAB_IPFS_NODE_TCP_PORT}" --log=stdout gl_ipfs:4001
+    entrypoint: ngrok tcp --region=${NGROK_REGION} --remote-addr "${GILDLAB_IPFS_NODE_TCP_HOSTNAME}:${GILDLAB_IPFS_NODE_TCP_PORT}" --log=stdout gl_ipfs:4001
     env_file:
       - ${GILDLAB_IPFS_NODE_BASE_PATH}/.env
     depends_on:
