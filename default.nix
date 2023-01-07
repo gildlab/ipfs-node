@@ -143,8 +143,6 @@ pkgs.mkShell {
     pkgs.docker-compose
     pkgs.nano
     pkgs.wget
-    # ipfs
-    pkgs.kubo
     pkgs.ix
     pkgs.curl
     pkgs.jq
