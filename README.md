@@ -58,7 +58,7 @@ $ docker --version
 To verify that the current user can run docker commands without root access.
 
 ```
-$ docker run hellow-world
+$ docker run hello-world
 ```
 
 If this doesn't work then run the post installation steps https://docs.docker.com/engine/install/linux-postinstall/
