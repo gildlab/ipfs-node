@@ -24,9 +24,11 @@ let
     source-env = ''
       if [[ -f "${path}/.env" ]]
         then
+          set +x
           set -o allexport
           source ${path}/.env
           set +o allexport
+          set -x
         else
           touch ${path}/.env
       fi
