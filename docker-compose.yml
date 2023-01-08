@@ -38,7 +38,7 @@ services:
     environment:
       - IPFS_HOST=gl_ipfs
     volumes:
-      - ${GILDLAB_IPFS_NODE_BASE_PATH}/volumes/pin/peerlist:/peerlist
+      - ${GILDLAB_IPFS_NODE_BASE_PATH}/volumes/pin:/pin
 
   gl_ngrok_ipfs:
     container_name: gl_ngrok_ipfs

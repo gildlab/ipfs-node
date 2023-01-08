@@ -5,8 +5,10 @@ set -Eeux
 
 . ipfs.sh
 
+peerlist_path="./pin/peerlist"
+
 get_peers() {
-    cat peerlist
+    cat $peerlist_path
 }
 
 # extracts only the ids from the peerlist
