@@ -5,13 +5,20 @@ set -Eeux
 
 . ipfs.sh
 
-# get the hashes from the subgraph
-get_hashes () {
-    local url='https://api.thegraph.com/subgraphs/name/gild-lab/offchainassetvault'
-    local id='0x8058ad7c22fdc8788fe4cb1dac15d6e976127324';
+# query for hashes from the subgraph
+build_query () {
+    local ids=('0x8058ad7c22fdc8788fe4cb1dac15d6e976127324' '0xc0D477556c25C9d67E1f57245C7453DA776B51cf');
+    # Build a lowercased json array from ids bash array
+    local jsonids=$( jq -c -n '$ARGS.positional' --args "${ids[@],,}")
     local query=$( cat << "QUERY"
-        query($id: String!) {
-            hashes(first:100, skip: 0, orderBy:timestamp, orderDirection: desc) {
+        query($ids: [String!]) {
+            hashes(
+              first:100
+              skip: 0
+              orderBy:timestamp
+              orderDirection: desc
+              where: {offchainAssetReceiptVaultDeployer_in: $ids}
+            ) {
                 hash
             }
         }
@@ -21,16 +28,20 @@ QUERY
         {
             query: $query,
             variables: {
-                id: $id
+                ids: $ids
             }
         }
 PAYLOAD
     );
+    jq -n --arg query "$query" --arg ids $jsonids "$payload";
+}
+
+# fetch hashes from subgraph
+fetch_hashes() {
+    local url='https://api.thegraph.com/subgraphs/name/gild-lab/offchainassetvault'
     local jq_selector='.data.hashes[].hash | select(startswith("Qm"))';
 
-    local body=$( jq -n --arg query "$query" --arg id $id "$payload" );
-
-    curl -X POST -d "$body" $url | jq -r "$jq_selector"
+    curl -X POST -d "$( build_query )" $url | jq -r "$jq_selector";
 }
 
 # pin using kubo directly
@@ -49,5 +60,5 @@ pin_add() {
 
 # pin the hashes to the ipfs node
 main_pin() {
-    pin_add "$( get_hashes )"
+    pin_add "$( fetch_hashes )"
 }
