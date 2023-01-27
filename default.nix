@@ -1,8 +1,8 @@
 { pkgs ? import
     (builtins.fetchTarball {
       name = "nixos-unstable-2022-12-18";
-      url = "https://github.com/nixos/nixpkgs/archive/b65120b662a663f997ddc795c3e42fe9218864c4.tar.gz";
-      sha256 = "sha256:1xa1fif440zhlhc5s3pk9mkprkzvk0rcgif8k4mscbcl6c8sgqw0";
+      url = "https://github.com/nixos/nixpkgs/archive/9bf79ea2f90a7b76a0670b6ea14aa502975ad0bf.tar.gz";
+      sha256 = "sha256:048znm5k0ny2pbp08myj4qf352zdg19ls45m0750jwryh3j3aacv";
     })
     { } }:
 let

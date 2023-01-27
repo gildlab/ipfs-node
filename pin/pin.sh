@@ -9,7 +9,7 @@ set -Eeux
 build_query () {
     local ids=('0x8058ad7c22fdc8788fe4cb1dac15d6e976127324' '0xc0D477556c25C9d67E1f57245C7453DA776B51cf');
     # Build a lowercased json array from ids bash array
-    local jsonids=$( jq -c -n '$ARGS.positional' --args "${ids[@],,}")
+    local jsonids=$( jq -c -n '$ARGS.positional' --args "${ids[@],,}" )
     local query=$( cat << "QUERY"
         query($ids: [String!]) {
             hashes(
@@ -33,15 +33,25 @@ QUERY
         }
 PAYLOAD
     );
-    jq -n --arg query "$query" --arg ids $jsonids "$payload";
+    jq -n --arg query "$query" --argjson ids "$jsonids" "$payload";
 }
 
 # fetch hashes from subgraph
 fetch_hashes() {
-    local url='https://api.thegraph.com/subgraphs/name/gild-lab/offchainassetvault'
-    local jq_selector='.data.hashes[].hash | select(startswith("Qm"))';
+    local networks=("polygon" "mumbai")
+    local jq_selector='.data.hashes[]?.hash | select(startswith("Qm"))';
+    local query="$( build_query )"
+    local accumulator=''
 
-    curl -X POST -d "$( build_query )" $url | jq -r "$jq_selector";
+    for network in "${networks[@]}"
+    do
+        local url="https://api.thegraph.com/subgraphs/name/gildlab/offchainassetvault-$network"
+        local json_response=$( curl -X POST -d "$query" "$url" )
+        local hashes=$( echo "$json_response" | jq -r "$jq_selector" );
+        accumulator="$hashes"$'\n'"$accumulator"
+    done
+
+    printf "%s" "$accumulator"
 }
 
 # pin using kubo directly
