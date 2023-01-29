@@ -107,6 +107,11 @@ let
       ${source-env}
     '';
 
+    gl-basicauth-edit = pkgs.writeShellScriptBin "gl-basicauth-edit" ''
+      mkdir -p ${path}/volumes/nginx
+      ${pkgs.nano}/bin/nano ${path}/volumes/nginx/.htpasswd
+    '';
+
     gl-peerlist-edit = pkgs.writeShellScriptBin "gl-peerlist-edit" ''
       mkdir -p ${path}/volumes/pin
       sudo ${pkgs.nano}/bin/nano ${path}/volumes/pin/peerlist
@@ -150,6 +155,7 @@ pkgs.mkShell {
     gl-config-edit
     gl-docker-logs
     gl-fresh-ipfs
+    gl-basicauth-edit
     gl-peerlist-edit
     gl-peerlist-show
     gl-peerlist-import

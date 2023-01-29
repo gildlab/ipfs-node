@@ -20,6 +20,8 @@ services:
     restart: always
     ports:
       - "127.0.0.1::80"
+    volumes:
+      - ${GILDLAB_IPFS_NODE_BASE_PATH}/volumes/nginx:/nginx
     depends_on:
       gl_ipfs:
         condition: service_healthy
