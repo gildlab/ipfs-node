@@ -38,7 +38,7 @@ PAYLOAD
 
 # fetch hashes from subgraph
 fetch_hashes() {
-    local networks=("polygon" "mumbai")
+    local networks=("polygon" "mumbai" "goerli")
     local jq_selector='.data.hashes[]?.hash | select(startswith("Qm"))';
     local query="$( build_query )"
     local accumulator=''
