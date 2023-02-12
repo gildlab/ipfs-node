@@ -7,7 +7,7 @@ set -Eeux
 
 # query for hashes from the subgraph
 build_query () {
-    local ids=('0x8058ad7c22fdc8788fe4cb1dac15d6e976127324' '0xc0D477556c25C9d67E1f57245C7453DA776B51cf');
+    local ids=('0x8058ad7c22fdc8788fe4cb1dac15d6e976127324' '0xc0D477556c25C9d67E1f57245C7453DA776B51cf' '0x6E37d34e35a5fF2f896eD9e76EC43e728adA1d18');
     # Build a lowercased json array from ids bash array
     local jsonids=$( jq -c -n '$ARGS.positional' --args "${ids[@],,}" )
     local query=$( cat << "QUERY"
