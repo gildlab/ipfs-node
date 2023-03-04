@@ -19,7 +19,9 @@ jobs:
             concurrency: ipfs
           - concurrency: default
     runs-on: ubuntu-latest
-    concurrency: ${{ matrix.concurrency }}
+    concurrency:
+      group: ${{ matrix.concurrency }}
+      cancel-in-progress: false
     steps:
       - uses: actions/checkout@v3
       - uses: docker/login-action@v2
