@@ -15,7 +15,7 @@ jobs:
         include:
           - box: ipfs
             concurrency: ipfs
-          - box: ifps-ngrok
+          - box: ipfs-ngrok
             concurrency: ipfs
           - concurrency: default
     runs-on: ubuntu-latest
