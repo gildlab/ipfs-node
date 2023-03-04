@@ -76,7 +76,7 @@ let
 
     gl-docker-start = pkgs.writeShellScriptBin "gl-docker-start" ''
       set -u
-      ${ensure-required-vars}
+      ${ensure-ngrok-required-vars}
       ${temp-main}
       ${down-containers}
 
@@ -90,7 +90,7 @@ let
 
     gl-docker-compose = pkgs.writeShellScriptBin "gl-docker-compose" ''
       set -u
-      ${ensure-required-vars}
+      ${ensure-ngrok-required-vars}
       ${temp-main}
       ${pkgs.docker-compose}/bin/docker-compose "$@"
     '';
@@ -101,7 +101,7 @@ let
     '';
 
     gl-config-edit = pkgs.writeShellScriptBin "gl-config-edit" ''
-      ${builtins.concatStringsSep "" (map ensure-var required-vars)}
+      ${builtins.concatStringsSep "" (map ensure-var ngrok-required-vars)}
       ${pkgs.nano}/bin/nano ${path}/.env
       ${pkgs.dotenv-linter}/bin/dotenv-linter ${path}/.env
       ${source-env}
