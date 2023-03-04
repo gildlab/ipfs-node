@@ -37,7 +37,7 @@ let
 
     # set some defaults if not set
     default-env = ''
-      export GILDLAB_IPFS_NODE_CHANNEL=''${GILDLAB_IPFS_NODE_CHANNEL:-main}
+      : "''${GILDLAB_IPFS_NODE_CHANNEL:=main}"
     '';
 
     ngrok-required-vars = ["GILDLAB_IPFS_NODE_API_HOSTNAME" "GILDLAB_IPFS_NODE_TCP_HOSTNAME" "GILDLAB_IPFS_NODE_TCP_PORT" "NGROK_AUTHTOKEN" "NGROK_REGION"];
