@@ -14,9 +14,9 @@ jobs:
   build:
     strategy:
       matrix:
-        box: [ipfs, ipfs-ngrok, nginx, ngrok, pin]
+        box: [ipfs, nginx, ngrok, pin]
       include:
-        - ipfs
+        - box: ipfs
           extra: .ngrok
 
     runs-on: ubuntu-latest
