@@ -1,0 +1,10 @@
+name: Block merging
+on:
+  push:
+    branches: [develop]
+
+jobs:
+  block:
+    runs-on: ubuntu-latest
+    steps:
+      - run: exit 1
