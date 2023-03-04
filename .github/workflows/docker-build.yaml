@@ -30,9 +30,9 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - run: |
-        docker build -t "$TAG_BASE:${{ matrix.box }}-$BRANCH" --build-arg BRANCH="$BRANCH" ./${{ matrix.box }}
-        if [[ ! -z "$EXTRA" ]]
-        then
-          docker build -t "$TAG_BASE:${{ matrix.box }}-$BRANCH-$EXTRA" --build-arg BRANCH="$BRANCH" ./${{ matrix.box }}
-        fi
-      # - run: docker push gildlab/ipfs-node:${{ matrix.box }}-"$BRANCH"
+          docker build -t "$TAG_BASE:${{ matrix.box }}-$BRANCH" --build-arg BRANCH="$BRANCH" ./${{ matrix.box }}
+          if [[ ! -z "$EXTRA" ]]
+          then
+            docker build -t "$TAG_BASE:${{ matrix.box }}-$BRANCH-$EXTRA" --build-arg BRANCH="$BRANCH" ./${{ matrix.box }}
+          fi
+        # - run: docker push gildlab/ipfs-node:${{ matrix.box }}-"$BRANCH"
