@@ -1,4 +1,4 @@
-# syntax = edrevo/dockerfile-plus
+# syntax=edrevo/dockerfile-plus
 INCLUDE+ ../ipfs/Dockerfile
 
 ADD ./container-init.d/002-announce-ngrok.sh /container-init.d/002-announce-ngrok.sh
