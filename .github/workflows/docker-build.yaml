@@ -17,6 +17,7 @@ jobs:
             concurrency: ipfs
           - box: ifps-ngrok
             concurrency: ipfs
+          - concurrency: default
     runs-on: ubuntu-latest
     concurrency: ${{ matrix.concurrency }}
     steps:
