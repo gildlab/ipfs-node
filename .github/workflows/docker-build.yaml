@@ -12,15 +12,7 @@ jobs:
     strategy:
       matrix:
         box: [ipfs, ipfs-ngrok, nginx, ngrok, pin]
-        include:
-          - box: ipfs
-            concurrency: ipfs
-          - box: ipfs-ngrok
-            concurrency: ipfs
-          - concurrency: default
     runs-on: ubuntu-latest
-    concurrency:
-      group: ${{ matrix.concurrency }}
     steps:
       - uses: actions/checkout@v3
       - uses: docker/login-action@v2
