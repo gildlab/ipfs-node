@@ -17,7 +17,7 @@ jobs:
         box: [ipfs, nginx, ngrok, pin]
         include:
           - box: ipfs
-            extra: .ngrok
+            extra: ngrok
 
     runs-on: ubuntu-latest
     env:
@@ -33,7 +33,7 @@ jobs:
           docker build -t "$TAG_BASE:${{ matrix.box }}-$BRANCH" --build-arg BRANCH="$BRANCH" ./${{ matrix.box }}
           if [[ ! -z "$EXTRA" ]]
           then
-            docker build -t "$TAG_BASE:${{ matrix.box }}-$BRANCH-$EXTRA" --build-arg BRANCH="$BRANCH" ./${{ matrix.box }}
+            docker build -t "$TAG_BASE:${{ matrix.box }}-$BRANCH-$EXTRA" --build-arg BRANCH="$BRANCH" -f "Dockerfile.$EXTRA" ./${{ matrix.box }}
           fi
       - run: |
           docker push "$TAG_BASE:${{ matrix.box }}-$BRANCH"
