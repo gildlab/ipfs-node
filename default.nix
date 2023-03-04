@@ -35,6 +35,11 @@ let
       fi
     '';
 
+    # set some defaults if not set
+    default-env = ''
+      export GILDLAB_IPFS_NODE_CHANNEL=''${GILDLAB_IPFS_NODE_CHANNEL:-main}
+    '';
+
     ngrok-required-vars = ["GILDLAB_IPFS_NODE_API_HOSTNAME" "GILDLAB_IPFS_NODE_TCP_HOSTNAME" "GILDLAB_IPFS_NODE_TCP_PORT" "NGROK_AUTHTOKEN" "NGROK_REGION"];
 
     ensure-var = var-name: ''
@@ -168,5 +173,6 @@ pkgs.mkShell {
     ${temp-main}
     ${ensure-home}
     ${source-env}
+    ${default-env}
   '';
 }

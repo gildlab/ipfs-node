@@ -6,11 +6,11 @@ services:
       - "127.0.0.1::80"
       - "127.0.0.1::4001"
   gl_ipfs:
-    image: gildlab/ipfs-node:ipfs-ngrok
+    image: gildlab/ipfs-node:${GILDLAB_IPFS_NODE_CHANNEL}.ipfs.ngrok
 
   gl_ngrok_nginx:
     container_name: gl_ngrok_nginx
-    image: gildlab/ipfs-node:ngrok
+    image: gildlab/ipfs-node:${GILDLAB_IPFS_NODE_CHANNEL}.ngrok
     restart: always
     entrypoint: ngrok http --region=${NGROK_REGION} --hostname ${GILDLAB_IPFS_NODE_API_HOSTNAME} --log=stdout gl_nginx:80
     env_file:
@@ -20,7 +20,7 @@ services:
 
   gl_ngrok_ipfs:
     container_name: gl_ngrok_ipfs
-    image: gildlab/ipfs-node:ngrok
+    image: gildlab/ipfs-node:${GILDLAB_IPFS_NODE_CHANNEL}.ngrok
     restart: always
     entrypoint: ngrok tcp --region=${NGROK_REGION} --remote-addr "${GILDLAB_IPFS_NODE_TCP_HOSTNAME}:${GILDLAB_IPFS_NODE_TCP_PORT}" --log=stdout gl_ipfs:4001
     env_file:

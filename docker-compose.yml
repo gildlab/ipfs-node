@@ -3,7 +3,7 @@ version: '3.9'
 services:
   gl_ipfs:
     container_name: gl_ipfs
-    image: gildlab/ipfs-node:ipfs
+    image: gildlab/ipfs-node:${GILDLAB_IPFS_NODE_CHANNEL}.ipfs
     restart: always
     # dont expose anything in particular use nginx for that
     ports:
@@ -16,7 +16,7 @@ services:
 
   gl_pin:
     container_name: gl_pin
-    image: gildlab/ipfs-node:pin
+    image: gildlab/ipfs-node:${GILDLAB_IPFS_NODE_CHANNEL}.pin
     restart: always
     depends_on:
       gl_ipfs:
@@ -32,7 +32,7 @@ services:
 
   gl_nginx:
     container_name: gl_nginx
-    image: gildlab/ipfs-node:nginx
+    image: gildlab/ipfs-node:${GILDLAB_IPFS_NODE_CHANNEL}.nginx
     restart: always
     ports:
       - "80:80"
