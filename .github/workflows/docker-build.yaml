@@ -30,14 +30,14 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - run: |
-          docker build -t "$TAG_BASE:${{ matrix.box }}-$CHANNEL" --build-arg CHANNEL="$CHANNEL" ./${{ matrix.box }}
+          docker build -t "$TAG_BASE:$CHANNEL.${{ matrix.box }}" ./${{ matrix.box }}
           if [[ ! -z "$EXTRA" ]]
           then
-            docker build -t "$TAG_BASE:${{ matrix.box }}-$CHANNEL-$EXTRA" --build-arg CHANNEL="$CHANNEL" -f "./${{ matrix.box }}/Dockerfile.$EXTRA" ./${{ matrix.box }}
+            docker build -t "$TAG_BASE:$CHANNEL.${{ matrix.box }}.$EXTRA" -f "./${{ matrix.box }}/Dockerfile.$EXTRA" ./${{ matrix.box }}
           fi
       - run: |
-          docker push "$TAG_BASE:${{ matrix.box }}-$CHANNEL"
+          docker push "$TAG_BASE:$CHANNEL.${{ matrix.box }}"
           if [[ ! -z "$EXTRA" ]]
           then
-            docker push "$TAG_BASE:${{ matrix.box }}-$CHANNEL-$EXTRA"
+            docker push "$TAG_BASE:$CHANNEL.${{ matrix.box }}.$EXTRA"
           fi
