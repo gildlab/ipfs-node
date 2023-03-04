@@ -39,5 +39,5 @@ jobs:
           docker push "$TAG_BASE:${{ matrix.box }}-$BRANCH"
           if [[ ! -z "$EXTRA" ]]
           then
-            docker push "$TAG_BASE:${{ matrix.box }}-$BRANCH-$EXTRA" --build-arg BRANCH="$BRANCH" ./${{ matrix.box }}
+            docker push "$TAG_BASE:${{ matrix.box }}-$BRANCH-$EXTRA"
           fi
