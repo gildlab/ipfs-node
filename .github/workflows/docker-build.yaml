@@ -5,7 +5,7 @@ on:
     branches: [ main, develop ]
 
 env:
-  BRANCH: ${{ github.head_ref || github.ref_name }}
+  CHANNEL: ${{ github.head_ref || github.ref_name }}
   DOCKER_BUILDKIT: 1
   COMPOSE_DOCKER_CLI_BUILD: 1
   TAG_BASE: gildlab/ipfs-node
@@ -30,14 +30,14 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - run: |
-          docker build -t "$TAG_BASE:${{ matrix.box }}-$BRANCH" --build-arg BRANCH="$BRANCH" ./${{ matrix.box }}
+          docker build -t "$TAG_BASE:${{ matrix.box }}-$CHANNEL" --build-arg CHANNEL="$CHANNEL" ./${{ matrix.box }}
           if [[ ! -z "$EXTRA" ]]
           then
-            docker build -t "$TAG_BASE:${{ matrix.box }}-$BRANCH-$EXTRA" --build-arg BRANCH="$BRANCH" -f "./${{ matrix.box }}/Dockerfile.$EXTRA" ./${{ matrix.box }}
+            docker build -t "$TAG_BASE:${{ matrix.box }}-$CHANNEL-$EXTRA" --build-arg CHANNEL="$CHANNEL" -f "./${{ matrix.box }}/Dockerfile.$EXTRA" ./${{ matrix.box }}
           fi
       - run: |
-          docker push "$TAG_BASE:${{ matrix.box }}-$BRANCH"
+          docker push "$TAG_BASE:${{ matrix.box }}-$CHANNEL"
           if [[ ! -z "$EXTRA" ]]
           then
-            docker push "$TAG_BASE:${{ matrix.box }}-$BRANCH-$EXTRA"
+            docker push "$TAG_BASE:${{ matrix.box }}-$CHANNEL-$EXTRA"
           fi
