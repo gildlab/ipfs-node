@@ -2,13 +2,16 @@ name: Docker image CI
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, develop ]
+
+env:
+  BRANCH: ${{ github.head_ref || github.ref_name }}
 
 jobs:
   build:
     strategy:
       matrix:
-        box: [ipfs, nginx, ngrok, pin]
+        box: [ipfs, ipfs-ngrok, nginx, ngrok, pin]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -16,5 +19,5 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - run: docker build -t gildlab/ipfs-node:${{ matrix.box }} ./${{ matrix.box }}
-      - run: docker push gildlab/ipfs-node:${{ matrix.box }}
+      - run: docker build -t gildlab/ipfs-node:${{ matrix.box }}-"$BRANCH" --build-arg BRANCH="$BRANCH" ./${{ matrix.box }}
+      # - run: docker push gildlab/ipfs-node:${{ matrix.box }}-"$BRANCH"
