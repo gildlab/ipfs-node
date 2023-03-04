@@ -62,8 +62,8 @@ let
       fi
     '';
 
-    ensure-required-vars = ''
-      ${builtins.concatStringsSep "" (map ensure-var required-vars)}
+    ensure-ngrok-required-vars = ''
+      ${builtins.concatStringsSep "" (map ensure-var ngrok-required-vars)}
       ${source-env}
     '';
 

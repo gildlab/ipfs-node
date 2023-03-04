@@ -5,7 +5,8 @@ services:
     ports:
       - "127.0.0.1::80"
       - "127.0.0.1::4001"
-
+  gl_ipfs:
+    image: gildlab/ipfs-node:ipfs-ngrok
 
   gl_ngrok_nginx:
     container_name: gl_ngrok_nginx
