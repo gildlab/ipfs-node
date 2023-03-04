@@ -1,0 +1,29 @@
+version: '3.9'
+
+services:
+  gl_nginx:
+    ports:
+      - "127.0.0.1::80"
+      - "127.0.0.1::4001"
+
+
+  gl_ngrok_nginx:
+    container_name: gl_ngrok_nginx
+    image: gildlab/ipfs-node:ngrok
+    restart: always
+    entrypoint: ngrok http --region=${NGROK_REGION} --hostname ${GILDLAB_IPFS_NODE_API_HOSTNAME} --log=stdout gl_nginx:80
+    env_file:
+      - ${GILDLAB_IPFS_NODE_BASE_PATH}/.env
+    depends_on:
+      - gl_nginx
+
+  gl_ngrok_ipfs:
+    container_name: gl_ngrok_ipfs
+    image: gildlab/ipfs-node:ngrok
+    restart: always
+    entrypoint: ngrok tcp --region=${NGROK_REGION} --remote-addr "${GILDLAB_IPFS_NODE_TCP_HOSTNAME}:${GILDLAB_IPFS_NODE_TCP_PORT}" --log=stdout gl_ipfs:4001
+    env_file:
+      - ${GILDLAB_IPFS_NODE_BASE_PATH}/.env
+    depends_on:
+      gl_ipfs:
+        condition: service_healthy
