@@ -90,7 +90,7 @@ let
       ${pkgs.docker}/bin/docker network prune -f
 
       ${pkgs.docker-compose}/bin/docker-compose pull
-      ${pkgs.docker-compose}/bin/docker-compose up -d
+      ${pkgs.docker-compose}/bin/docker-compose up --remove-orphans -d
     '';
 
     gl-docker-stop = pkgs.writeShellScriptBin "gl-docker-stop" ''
