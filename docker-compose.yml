@@ -6,8 +6,15 @@ services:
     image: gildlab/ipfs-node:${GILDLAB_IPFS_NODE_CHANNEL}.ipfs
     restart: always
     # dont expose anything in particular use nginx for that
+    # localhost and ephemeral ports only
     ports:
+      # admin (definitely not world visible)
+      - "127.0.0.1::5001"
+      # p2p tcp/quic
       - "127.0.0.1::4001"
+      - "127.0.0.1::4001/udp"
+      # gateway
+      - "127.0.0.1::8080"
     volumes:
       - ${GILDLAB_IPFS_NODE_BASE_PATH}/volumes/ipfs/data/ipfs:/data/ipfs
       - ${GILDLAB_IPFS_NODE_BASE_PATH}/volumes/ipfs/export:/export

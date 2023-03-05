@@ -134,6 +134,8 @@ let
       sudo curl "$@" -o ${path}/volumes/pin/peerlist
     '';
 
+    # Provides a fresh ipfs setup by moving the current one somewhere that
+    # ipfs doesn't know to look. Not subtle.
     gl-fresh-ipfs = pkgs.writeShellScriptBin "gl-fresh-ipfs" ''
     set -u
     mv ''${GILDLAB_IPFS_NODE_BASE_PATH}/volumes/ipfs ''${GILDLAB_IPFS_NODE_BASE_PATH}/volumes/ipfs.bak.$(date +%s )
