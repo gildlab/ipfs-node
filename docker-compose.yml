@@ -11,8 +11,11 @@ services:
       # admin (definitely not world visible)
       - "127.0.0.1::5001"
       # p2p tcp/quic
-      - "127.0.0.1::4001"
-      - "127.0.0.1::4001/udp"
+      # - "127.0.0.1::4001"
+      # - "127.0.0.1::4001/udp"
+      # expose directly here for now, can use nginx in future
+      - "4001:4001"
+      - "4001:4001/udp"
       # gateway
       - "127.0.0.1::8080"
     volumes:
@@ -43,7 +46,8 @@ services:
     restart: always
     ports:
       - "80:80"
-      - "4001:4001"
+      # p2p for ipfs
+      # - "4001:4001"
     volumes:
       - ${GILDLAB_IPFS_NODE_BASE_PATH}/volumes/nginx:/nginx
     depends_on:
