@@ -88,6 +88,11 @@ let
       ${pkgs.docker-compose}/bin/docker-compose up -d
     '';
 
+    gl-docker-stop = pkgs.writeShellScriptBin "gl-docker-stop" ''
+      set -u
+      ${down-containers}
+    '';
+
     gl-docker-compose = pkgs.writeShellScriptBin "gl-docker-compose" ''
       set -u
       ${ensure-required-vars}
@@ -152,6 +157,7 @@ pkgs.mkShell {
     pkgs.curl
     pkgs.jq
     gl-docker-start
+    gl-docker-stop
     gl-config-edit
     gl-docker-logs
     gl-fresh-ipfs
