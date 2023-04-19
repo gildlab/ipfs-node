@@ -117,6 +117,7 @@ let
       ${source-env}
     '';
 
+    # generate with `htpasswd -nbB <username> <password>`
     gl-basicauth-edit = pkgs.writeShellScriptBin "gl-basicauth-edit" ''
       mkdir -p ${path}/volumes/nginx
       ${pkgs.nano}/bin/nano ${path}/volumes/nginx/.htpasswd
