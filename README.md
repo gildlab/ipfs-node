@@ -83,7 +83,8 @@ Where `<command>` is whatever command you want to run.
 #### Setup config
 
 Run `gl-config-edit` in nix shell to setup config for your environment.
-The required configuration will be prompted if not set and then you can edit them all in the editor.
+
+`GILDLAB_IPFS_NODE_CHANNEL` : Set the channel (github branch) to either `main` or `develop`. Default is `main` if not set.
 
 #### Setup peerlist
 

@@ -70,5 +70,7 @@ pin_add() {
 
 # pin the hashes to the ipfs node
 main_pin() {
-    pin_add "$( fetch_hashes )"
+    # use gildlab-cli instead of fetch hashes as it supports pagination
+    # @todo replace all with cli
+    pin_add "$( gildlab-cli pins )"
 }

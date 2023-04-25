@@ -67,11 +67,6 @@ let
       fi
     '';
 
-    ensure-ngrok-required-vars = ''
-      ${builtins.concatStringsSep "" (map ensure-var ngrok-required-vars)}
-      ${source-env}
-    '';
-
     container-names = ["gl_ipfs" "gl_nginx" "gl_pin" "gl_ngrok_ipfs" "gl_ngrok_nginx"];
     down-container = container: ''
       ${pkgs.docker}/bin/docker stop ${container}
@@ -81,7 +76,6 @@ let
 
     gl-docker-start = pkgs.writeShellScriptBin "gl-docker-start" ''
       set -u
-      ${ensure-ngrok-required-vars}
       ${temp-main}
       ${down-containers}
 
@@ -100,7 +94,6 @@ let
 
     gl-docker-compose = pkgs.writeShellScriptBin "gl-docker-compose" ''
       set -u
-      ${ensure-ngrok-required-vars}
       ${temp-main}
       ${pkgs.docker-compose}/bin/docker-compose "$@"
     '';
@@ -111,7 +104,6 @@ let
     '';
 
     gl-config-edit = pkgs.writeShellScriptBin "gl-config-edit" ''
-      ${builtins.concatStringsSep "" (map ensure-var ngrok-required-vars)}
       ${pkgs.nano}/bin/nano ${path}/.env
       ${pkgs.dotenv-linter}/bin/dotenv-linter ${path}/.env
       ${source-env}

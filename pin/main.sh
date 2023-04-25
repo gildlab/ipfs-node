@@ -7,7 +7,7 @@ set -Eeux
 . pin.sh
 
 main() {
-    main_peering
+    # main_peering
     main_pin
 }
 
