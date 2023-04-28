@@ -143,10 +143,6 @@ pkgs.mkShell {
     gl-docker-logs
     gl-fresh-ipfs
     gl-basicauth-edit
-    gl-peerlist-edit
-    gl-peerlist-show
-    gl-peerlist-import
-    gl-peerlist-export
     gl-docker-compose
     gl-docker-health
   ];
