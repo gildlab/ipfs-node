@@ -14,14 +14,9 @@ jobs:
   build:
     strategy:
       matrix:
-        box: [ipfs, nginx, ngrok, pin]
-        include:
-          - box: ipfs
-            extra: ngrok
+        box: [ipfs, nginx, pin]
 
     runs-on: ubuntu-latest
-    env:
-      EXTRA: ${{ matrix.extra }}
     steps:
       - uses: actions/checkout@v3
       - uses: docker/setup-buildx-action@v2
@@ -31,13 +26,5 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - run: |
           docker build -t "$TAG_BASE:$CHANNEL.${{ matrix.box }}" ./${{ matrix.box }}
-          if [[ ! -z "$EXTRA" ]]
-          then
-            docker build -t "$TAG_BASE:$CHANNEL.${{ matrix.box }}.$EXTRA" -f "./${{ matrix.box }}/Dockerfile.$EXTRA" ./${{ matrix.box }}
-          fi
       - run: |
           docker push "$TAG_BASE:$CHANNEL.${{ matrix.box }}"
-          if [[ ! -z "$EXTRA" ]]
-          then
-            docker push "$TAG_BASE:$CHANNEL.${{ matrix.box }}.$EXTRA"
-          fi
