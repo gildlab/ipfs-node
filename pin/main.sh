@@ -3,11 +3,9 @@
 
 set -Eeux
 
-. peering.sh
 . pin.sh
 
 main() {
-    # main_peering
     main_pin
 }
 
