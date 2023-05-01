@@ -16,7 +16,6 @@ let
       mkdir -p ${path}/volumes/ipfs/data/ipfs
       mkdir -p ${path}/volumes/ipfs/export
       mkdir -p ${path}/volumes/pin
-      sudo touch ${path}/volumes/pin/peerlist
 
       mkdir -p ${path}/volumes/nginx
       touch ${path}/.env
@@ -115,23 +114,6 @@ let
       ${pkgs.nano}/bin/nano ${path}/volumes/nginx/.htpasswd
     '';
 
-    gl-peerlist-edit = pkgs.writeShellScriptBin "gl-peerlist-edit" ''
-      mkdir -p ${path}/volumes/pin
-      sudo ${pkgs.nano}/bin/nano ${path}/volumes/pin/peerlist
-    '';
-
-    gl-peerlist-show = pkgs.writeShellScriptBin "gl-peerlist-show" ''
-      sudo cat ${path}/volumes/pin/peerlist
-    '';
-
-    gl-peerlist-export = pkgs.writeShellScriptBin "gl-peerlist-export" ''
-      sudo cat ${path}/volumes/pin/peerlist | ix
-    '';
-
-    gl-peerlist-import = pkgs.writeShellScriptBin "gl-peerlist-import" ''
-      sudo curl "$@" -o ${path}/volumes/pin/peerlist
-    '';
-
     # Provides a fresh ipfs setup by moving the current one somewhere that
     # ipfs doesn't know to look. Not subtle.
     gl-fresh-ipfs = pkgs.writeShellScriptBin "gl-fresh-ipfs" ''
@@ -162,10 +144,6 @@ pkgs.mkShell {
     gl-docker-logs
     gl-fresh-ipfs
     gl-basicauth-edit
-    gl-peerlist-edit
-    gl-peerlist-show
-    gl-peerlist-import
-    gl-peerlist-export
     gl-docker-compose
     gl-docker-health
   ];
