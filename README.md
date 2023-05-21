@@ -2,7 +2,32 @@
 
 ## Installation
 
-ONLY UBUNTU WITH SUDO IS SUPPORTED AT THIS TIME
+### Get an Ubuntu Server USB
+
+ONLY UBUNTU SERVER WITH SUDO IS SUPPORTED AT THIS TIME
+
+The assumption is that:
+
+- This is being installed on a dedicated machine
+- With a wired (not wifi) network connection and a static IP assigned by the ISP
+- That can be wiped and rebuilt on short notice
+- With the intent to keep the system as simple and low maintenance as possible
+
+Download Ubuntu Server (not desktop) from https://ubuntu.com/download/server
+
+Get an LTS (long term support) version.
+
+This guide was last reviewed under 22.04.2
+
+Download Balena Etcher https://etcher.balena.io/
+
+On linux the Balena Etcher is an AppImage so https://github.com/TheAssassin/AppImageLauncher
+might help to run it.
+
+### Install Ubuntu Server
+
+Boot the device with the Ubuntu Server USB inserted, it should offer installing
+Ubuntu.
 
 ### Install curl
 
