@@ -1,11 +1,7 @@
 FROM nixos/nix:2.16.1
 
-RUN nix-channel --update
-
-RUN nix-shell -p bash jq curl xe dig rustc cargo pkgconfig openssl --run exit
-
 # Get latest gildlab cli from main
-RUN nix profile install github:gildlab/gildlab-cli
+RUN nix --extra-experimental-features nix-command profile install github:gildlab/gildlab-cli
 RUN gildlab-cli --version
 
 ADD . .
