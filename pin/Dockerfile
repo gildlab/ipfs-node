@@ -1,8 +1,7 @@
 FROM nixos/nix:2.16.1
 
 # Get latest gildlab cli from main
-RUN nix --extra-experimental-features "nix-command flakes" --print-build-logs profile install github:gildlab/gildlab-cli
-RUN nix-collect-garbage -d
+RUN nix --extra-experimental-features "nix-command flakes" --print-build-logs profile install github:gildlab/gildlab-cli && nix-collect-garbage -d
 RUN gildlab-cli --version
 
 ADD . .
