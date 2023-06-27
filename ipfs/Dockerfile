@@ -1,4 +1,9 @@
-FROM ipfs/kubo:v0.19.1
+FROM ipfs/kubo:v0.21.0-rc3
 
 ADD ./container-init.d/001-set-allow-origin.sh /container-init.d/001-set-allow-origin.sh
-RUN chmod a+x /container-init.d/001-set-allow-origin.sh /container-init.d/001-set-allow-origin.sh
+RUN chmod a+x /container-init.d/001-set-allow-origin.sh
+RUN /container-init.d/001-set-allow-origin.sh
+
+ADD ./container-init.d/002-set-udp-only.sh /container-init.d/002-set-udp-only.sh
+RUN chmod a+x /container-init.d/002-set-udp-only.sh
+RUN /container-init.d/002-set-udp-only.sh
