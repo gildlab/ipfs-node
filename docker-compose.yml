@@ -4,6 +4,7 @@ services:
   gl_ipfs:
     container_name: gl_ipfs
     image: gildlab/ipfs-node:${GILDLAB_IPFS_NODE_CHANNEL}.ipfs
+    pull_policy: always
     restart: always
     # dont expose anything in particular use nginx for that
     # localhost and ephemeral ports only
@@ -14,7 +15,9 @@ services:
       # - "127.0.0.1::4001"
       # - "127.0.0.1::4001/udp"
       # expose directly here for now, can use nginx in future
-      - "4001:4001"
+      # Disabling tcp due to router issues. 4001/udp is fine.
+      # https://github.com/ipfs/kubo/issues/3320#issuecomment-1321103079
+      # - "4001:4001"
       - "4001:4001/udp"
       # gateway
       - "127.0.0.1::8080"
@@ -27,6 +30,7 @@ services:
   gl_pin:
     container_name: gl_pin
     image: gildlab/ipfs-node:${GILDLAB_IPFS_NODE_CHANNEL}.pin
+    pull_policy: always
     restart: always
     depends_on:
       gl_ipfs:
@@ -43,6 +47,7 @@ services:
   gl_nginx:
     container_name: gl_nginx
     image: gildlab/ipfs-node:${GILDLAB_IPFS_NODE_CHANNEL}.nginx
+    pull_policy: always
     restart: always
     ports:
       - "80:80"

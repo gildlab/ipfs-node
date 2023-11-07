@@ -1,12 +1,8 @@
-FROM nixos/nix
-
-RUN nix-channel --update
-
-RUN nix-shell -p bash jq curl xe dig --run exit
+FROM nixos/nix:2.16.1
 
 # Get latest gildlab cli from main
-RUN nix-shell -p rustc cargo pkgconfig openssl --run 'cargo install --git https://github.com/gildlab/gildlab-cli --branch main'
-ENV PATH="$PATH:$USER/.cargo/bin"
+RUN nix --extra-experimental-features "nix-command flakes" --print-build-logs profile install github:gildlab/gildlab-cli && nix-collect-garbage -d
+RUN gildlab-cli --version
 
 ADD . .
 RUN chmod a+x /main.sh

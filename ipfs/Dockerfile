@@ -1,4 +1,4 @@
-FROM ipfs/kubo:v0.19.1
+FROM ipfs/kubo:v0.20.0
 
-ADD ./container-init.d/001-set-allow-origin.sh /container-init.d/001-set-allow-origin.sh
-RUN chmod a+x /container-init.d/001-set-allow-origin.sh /container-init.d/001-set-allow-origin.sh
+ADD ./container-init.d /container-init.d
+RUN chmod a+x /container-init.d/*
