@@ -34,6 +34,7 @@
         devShell = pkgs.mkShell rec {
             buildInputs = [
                 gildlab.defaultPackage.${system}
+                pkgs.apacheHttpd
             ];
 
             shellHook = ''

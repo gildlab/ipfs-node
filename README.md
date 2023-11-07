@@ -116,3 +116,13 @@ Run `gl-config-edit` in nix shell to setup config for your environment.
 Run `gl-docker-start` in nix shell to (re)boot all the boxes.
 
 This needs to be run whenever config/peerlist/etc. changes so that the changes take effect.
+
+## Commands
+
+### New password for ipfs node
+
+1. Enter `nix develop`
+2. htpasswd -nbB -C 10 <username> <password>
+
+This will provide hashed (bcrypt) version of the password with username in a
+format that is compatible with nginx.
