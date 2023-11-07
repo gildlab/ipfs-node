@@ -111,25 +111,18 @@ Run `gl-config-edit` in nix shell to setup config for your environment.
 
 `GILDLAB_IPFS_NODE_CHANNEL` : Set the channel (github branch) to either `main` or `develop`. Default is `main` if not set.
 
-#### Setup peerlist
-
-Run `gl-peerlist-edit` in nix shell to setup the peerlist.
-Each peer is simply a newline.
-
-For ngrok peers each line will look like:
-
-```
-/dns/1.tcp.ngrok.io/tcp/<port>/p2p/<ipfs id>
-```
-
-Where your `port` can be found on the ngrok dashboard and your own `ipfs id` can be found by running `docker exec gl_ipfs ipfs id`.
-
-Each peer on the same setup can run the same commands to tell you their ipfs id and ngrok tcp port.
-
-You can also share peerlists in telegram, etc.
-
 #### (Re)start the docker
 
 Run `gl-docker-start` in nix shell to (re)boot all the boxes.
 
 This needs to be run whenever config/peerlist/etc. changes so that the changes take effect.
+
+## Commands
+
+### New password for ipfs node
+
+1. Enter `nix develop`
+2. htpasswd -nbB -C 10 <username> <password>
+
+This will provide hashed (bcrypt) version of the password with username in a
+format that is compatible with nginx.
