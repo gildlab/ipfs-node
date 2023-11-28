@@ -39,6 +39,7 @@
 
             shellHook = ''
             ${ensure-home}
+            source ${path}/.env
             '';
         };
       }
