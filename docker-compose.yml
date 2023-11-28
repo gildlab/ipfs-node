@@ -6,6 +6,8 @@ services:
     image: gildlab/ipfs-node:${GILDLAB_IPFS_NODE_CHANNEL}.ipfs
     pull_policy: always
     restart: always
+    logging:
+      driver: local
     # dont expose anything in particular use nginx for that
     # localhost and ephemeral ports only
     ports:
@@ -32,6 +34,8 @@ services:
     image: gildlab/ipfs-node:${GILDLAB_IPFS_NODE_CHANNEL}.pin
     pull_policy: always
     restart: always
+    logging:
+      driver: local
     depends_on:
       gl_ipfs:
         condition: service_healthy
@@ -49,6 +53,8 @@ services:
     image: gildlab/ipfs-node:${GILDLAB_IPFS_NODE_CHANNEL}.nginx
     pull_policy: always
     restart: always
+    logging:
+      driver: local
     ports:
       - "80:80"
       # p2p for ipfs
