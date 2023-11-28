@@ -40,6 +40,7 @@
             shellHook = ''
             ${ensure-home}
             source ${path}/.env
+            echo "channel is: $GILDLAB_IPFS_NODE_CHANNEL"
             '';
         };
       }
