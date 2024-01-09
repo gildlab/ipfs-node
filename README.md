@@ -97,19 +97,31 @@ You may need to restart the machine for these changes to take effect.
 
 ### Enter the nix shell for this repository
 
-Once you have nix and docker installed you can run nix shell commands straight from github.
+Once you have nix and docker installed you can run nix shell commands from this repo.
+
+First clone the repo from github, then run `nix-shell` from inside it.
 
 ```
-nix-shell https://abc.gildlab.xyz?$RANDOM --run <command>
+git clone git@github.com:gildlab/ipfs-node.git
+cd ipfs-node
+nix-shell
 ```
 
-Where `<command>` is whatever command you want to run.
+Now you should be inside a nix shell, which allows you to run the `gl-*` commands.
 
 #### Setup config
 
 Run `gl-config-edit` in nix shell to setup config for your environment.
 
 `GILDLAB_IPFS_NODE_CHANNEL` : Set the channel (github branch) to either `main` or `develop`. Default is `main` if not set.
+
+The config file is `.env` style, using the `export` keyword for variables.
+
+E.g. Your config file should look like:
+
+```
+export GILDLAB_IPFS_NODE_CHANNEL=develop
+```
 
 #### (Re)start the docker
 
@@ -126,3 +138,7 @@ This needs to be run whenever config/peerlist/etc. changes so that the changes t
 
 This will provide hashed (bcrypt) version of the password with username in a
 format that is compatible with nginx.
+
+Note that this uses `nix develop` rather than `nix-shell` as it uses the flake
+instead of the `default.nix` file. The nix shell way of doing things is
+deprecated, so things will be moved to `nix develop` over time.
